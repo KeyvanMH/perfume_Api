@@ -1,25 +1,54 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel OpenApi Demo Documentation",
-        "description": "L5 Swagger OpenApi description",
-        "contact": {
-            "email": "admin@admin.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "title": "Laravel perfume api",
+        "description": "L5 Swagger OpenApi ",
         "version": "1.0.0"
     },
     "servers": [
         {
-            "url": "http://localhost:8000",
-            "description": "Demo API Server"
+            "url": "http://localhost:8000"
         }
     ],
     "paths": {
-        "/api": {}
+        "api/faq": {
+            "get": {
+                "summary": "سوالات متداول برای کاربر عادی",
+                "operationId": "de32916780df138f646b5d1781d95fc0",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Faq"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Faq": {
+                "title": "سوالات متداول",
+                "properties": {
+                    "سوال": {
+                        "type": "string"
+                    },
+                    "جواب": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
     },
     "tags": []
 }

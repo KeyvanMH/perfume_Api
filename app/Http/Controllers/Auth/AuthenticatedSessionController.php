@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -13,13 +14,22 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return response()->noContent();
+        //get only phone number and sms token
+        //TODO validate the phone verify code
+        $phoneNumber = $request->input('phone_number');
+        $phoneVerifyCode = $request->input('phone_verify_code');
+        //if the user is not registered
+        //TODO firstOrCreate or newOrCreate
+        $user = User::where('phone_number',$phoneNumber);
+        if(empty($user)){
+            $user = User::Create(
+                ['phone_number' => $phoneNumber]
+            );
+        }
+        $token = $user->createToken($request->token_name);
+        return ['token' => $token->plainTextToken];
     }
 
     /**
