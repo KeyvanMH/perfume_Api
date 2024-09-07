@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\User;
 use App\Rules\phoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
-class userRequest extends FormRequest
+class ContactUsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +23,9 @@ class userRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'post_number' => [],
-            'phone_number' => ['required','integer','size:11', new phoneNumber]
+            'phone_number' => ['string','size:11',new phoneNumber],
+            'description' => ['string','max:500'],
+            'email' => ['nullable', 'email']
         ];
     }
 }

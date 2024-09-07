@@ -19,7 +19,5 @@ namespace App\Http\Controllers;
  */
 abstract class Controller
 {
-    //TODO change user verification to phone number instead of email
-    //TODO change reset password from from email to phone number
 
 }

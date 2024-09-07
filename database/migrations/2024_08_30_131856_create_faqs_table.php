@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('question');
             $table->string('answer');
-            $table->boolean('is_active');
+            $table->softDeletes();
         });
     }
 

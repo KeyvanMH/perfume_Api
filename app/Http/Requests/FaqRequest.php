@@ -23,8 +23,7 @@ class FaqRequest extends FormRequest
     {
         return [
             'question' => ['required','string','max:255'],
-            'answer' => ['required','string','max:255'],
-            'is_active' => ['required','bool']
+            'answer' => ['required','string','max:255']
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -13,19 +14,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('phone_number')->unique();
+            $table->bigInteger('phone_number')->unique();
+            //TODO these 2 rows must be in redis in seperate table
+//            $table->integer('sms_verify_code')->default(11111);
+//            $table->timestamp('sms_requested_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->unique()->nullable();
-            $table->integer('post_number')->unique()->nullable();
-            $table->integer('sms_verify_code')->nullable();
-            $table->timestamp('sms_requested_at')->nullable();
+            $table->bigInteger('post_number')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('is_product_admin')->default(false);
             $table->boolean('is_blog_admin')->default(false);
             $table->boolean('is_super_admin')->default(false);
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
 

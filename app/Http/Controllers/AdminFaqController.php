@@ -6,6 +6,168 @@ use App\Http\Requests\FaqRequest;
 use App\Http\Resources\AdminFaqResource;
 use App\Models\Faq;
 use Illuminate\Http\Request;
+/**
+ * @OA\Get(
+ *      path="api/faq/admin",
+ *      summary="سوالات متداول برای ادمین همراه با سوالات غیرفعال",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="path",
+ *          required=true,
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminFaq"),
+ *               },
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *           )
+ *       )
+ *  )
+ *
+ *
+ *
+ *
+ * @OA\Post(
+ *      path="api/faq/admin",
+ *      summary="افزودن به سوالات متداول",
+ *          @OA\Parameter(
+ *           description="احراز هویت با توکن",
+ *           in="path",
+ *           name="access token",
+ *           required=true,
+ *       ),
+ *     @OA\RequestBody(
+ *          @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  @OA\Property(
+ *                      property="question",
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="answer",
+ *                      type="string"
+ *                  ),
+ *                  example={"question": "سوال مورد نظر", "answer": "جواب مورد نظر "}
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK"
+ *           ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *           ),
+ *       )
+ *  )
+ *
+ *
+ *
+ * @OA\Put(
+ *       path="api/faq/admin/{id}",
+ *       summary="تغییر سوال موجود",
+ *           @OA\Parameter(
+ *            description="احراز هویت با توکن",
+ *            in="path",
+ *            name="access token",
+ *            required=true,
+ *        ),@OA\Parameter(
+ *            description="آیدی سوال در روت",
+ *            in="path",
+ *            name="id",
+ *            required=true,
+ *        ),
+ *      @OA\RequestBody(
+ *           @OA\MediaType(
+ *               mediaType="application/json",
+ *               @OA\Schema(
+ *                   @OA\Property(
+ *                       property="question",
+ *                       type="string"
+ *                   ),
+ *                   @OA\Property(
+ *                       property="answer",
+ *                       type="string"
+ *                   ),
+ *                   example={"question": "سوال مورد نظر", "answer": "جواب مورد نظر "}
+ *               )
+ *           )
+ *       ),
+ *       @OA\Response(
+ *            response=200,
+ *            description="OK"
+ *            ),
+ *       @OA\Response(
+ *            response=403,
+ *            description="unAuthorized"
+ *            ),
+ *        )
+ *   )
+ *
+ *
+ *
+ *
+ * @OA\Delete(
+ *        path="api/faq/admin/{id}",
+ *        summary="حذف سوال موجود",
+ *            @OA\Parameter(
+ *             description="احراز هویت با توکن",
+ *             in="path",
+ *             name="access token",
+ *             required=true,
+ *         ),@OA\Parameter(
+ *             description="آیدی سوال در روت",
+ *             in="path",
+ *             name="id",
+ *             required=true,
+ *         ),
+ *        @OA\Response(
+ *             response=200,
+ *             description="OK"
+ *             ),
+ *        @OA\Response(
+ *             response=403,
+ *             description="unAuthorized"
+ *             ),
+ *         )
+ *    )
+
+
+ *
+ *
+ * @OA\Schema(
+ *     schema="AdminFaq",
+ *     title=" سوالات متداول ادمین",
+ *    	@OA\Property(
+ *          property="question",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="id",
+ *          type="integer"
+ *      ),
+ *    	@OA\Property(
+ *          property="answer",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="is_active",
+ *          type="string",
+ *          default="فعال",
+ *      )
+ *    )
+ */
+
 
 class AdminFaqController extends Controller
 {
@@ -14,7 +176,8 @@ class AdminFaqController extends Controller
      */
     public function index()
     {
-        return AdminFaqResource::collection(Faq::all());
+        //TODO use cache
+        return AdminFaqResource::collection(Faq::withTrashed()->get());
     }
 
     /**
@@ -22,39 +185,31 @@ class AdminFaqController extends Controller
      */
     public function store(FaqRequest $request)
     {
-        //question , answer , is_active
-        return Faq::create([
+        $user = Faq::create([
             'question' => $request->input('question'),
             'answer' => $request->input('answer'),
-            'is_active' => $request->input('is_active')
         ]);
-
+        return AdminFaqResource::collection(collect([$user]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(FaqRequest $request, Faq $id)
+    public function update(FaqRequest $request, Faq $faq)
     {
-        $faq = Faq::findOrFail('id',$id);
         $faq->question = $request->input('question');
-        $faq->asnwer = $request->input('question');
-        $faq->is_active = $request->input('is_active');
+        $faq->answer = $request->input('question');
         $faq->save();
-
+        $faq->fill($request->only(['question', 'answer', 'is_active']))->save();
+        return response()->json(['response' => 'ok'],200);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Faq $id)
+    public function destroy(Faq $faq)
     {
-        $faq = Faq::find($id);
-
-        if ($faq) {
-            $faq->delete();
-        } else {
-            return response()->json(['message' => 'نتیجه مورد نظر یافت نشد!'], 404);
-        }
+        $faq->delete();
+        return response()->json(['response' => 'ok'],200);
     }
 }

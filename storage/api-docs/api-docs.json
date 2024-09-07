@@ -11,6 +11,155 @@
         }
     ],
     "paths": {
+        "api/faq/admin": {
+            "get": {
+                "summary": "سوالات متداول برای ادمین همراه با سوالات غیرفعال",
+                "operationId": "fc0ec27662653dfdb3efa5dd6e61b68b",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "path",
+                        "description": "احراز هویت با توکن",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/AdminFaq"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "unAuthorized"
+                    }
+                }
+            },
+            "post": {
+                "summary": "افزودن به سوالات متداول",
+                "operationId": "3a0f673b0ec4995049977b2510a88c84",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "path",
+                        "description": "احراز هویت با توکن",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "question": {
+                                        "type": "string"
+                                    },
+                                    "answer": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "question": "سوال مورد نظر",
+                                    "answer": "جواب مورد نظر "
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "unAuthorized"
+                    }
+                }
+            }
+        },
+        "api/faq/admin/{id}": {
+            "put": {
+                "summary": "تغییر سوال موجود",
+                "operationId": "0e69756d0909a7bcafb34f97275476e5",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "path",
+                        "description": "احراز هویت با توکن",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "آیدی سوال در روت",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "question": {
+                                        "type": "string"
+                                    },
+                                    "answer": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "question": "سوال مورد نظر",
+                                    "answer": "جواب مورد نظر "
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "unAuthorized"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "حذف سوال موجود",
+                "operationId": "cb736ccba5868b2b7d1e39ccc70a78c9",
+                "parameters": [
+                    {
+                        "name": "access token",
+                        "in": "path",
+                        "description": "احراز هویت با توکن",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "آیدی سوال در روت",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "unAuthorized"
+                    }
+                }
+            }
+        },
         "api/faq": {
             "get": {
                 "summary": "سوالات متداول برای کاربر عادی",
@@ -36,13 +185,32 @@
     },
     "components": {
         "schemas": {
+            "AdminFaq": {
+                "title": " سوالات متداول ادمین",
+                "properties": {
+                    "question": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "integer"
+                    },
+                    "answer": {
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "type": "string",
+                        "default": "فعال"
+                    }
+                },
+                "type": "object"
+            },
             "Faq": {
                 "title": "سوالات متداول",
                 "properties": {
-                    "سوال": {
+                    "question": {
                         "type": "string"
                     },
-                    "جواب": {
+                    "answer": {
                         "type": "string"
                     }
                 },

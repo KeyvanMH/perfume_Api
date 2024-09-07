@@ -22,7 +22,6 @@ class FaqFactory extends Factory
         return [
             'question' => fake()->text(20),
             'answer' => fake()->text(30),
-            'is_active' => $bool[random_int(0,1)]
         ];
     }
 }

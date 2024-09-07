@@ -18,17 +18,14 @@ class AuthenticatedSessionController extends Controller
     {
         //get only phone number and sms token
         //TODO validate the phone verify code
+//        if (!isValidPhoneVerifyCode($phoneNumber, $phoneVerifyCode)) {
+//            return response()->json(['error' => 'Invalid verification code'], 422);
+//        }
         $phoneNumber = $request->input('phone_number');
         $phoneVerifyCode = $request->input('phone_verify_code');
         //if the user is not registered
-        //TODO firstOrCreate or newOrCreate
-        $user = User::where('phone_number',$phoneNumber);
-        if(empty($user)){
-            $user = User::Create(
-                ['phone_number' => $phoneNumber]
-            );
-        }
-        $token = $user->createToken($request->token_name);
+        $user = User::firstOrCreate(['phone_number' => $phoneNumber]);
+        $token = $user->createToken('accessToken');
         return ['token' => $token->plainTextToken];
     }
 

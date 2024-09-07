@@ -21,31 +21,16 @@ class FaqController extends Controller
      *          )
      *      )
      * )
-     * @OA\Get(
-     *      path="api/faq/admin",
-     *      summary="سوالات متداول برای ادمین همراه با سوالات غیرفعال",
-     *      @OA\Response(
-     *           response=200,
-     *           description="OK",
-     *           @OA\JsonContent(
-     *               oneOf={
-     *                   @OA\Schema(ref="#/components/schemas/Faq"),
-     *               },
-     *           )
-     *       )
-     *  )
-     *
-     *
      *
      * @OA\Schema(
      *    schema="Faq",
      *    title="سوالات متداول",
      *   	@OA\Property(
-     *         property="سوال",
+     *         property="question",
      *         type="string"
      *     ),
      *   	@OA\Property(
-     *         property="جواب",
+     *         property="answer",
      *         type="string"
      *     )
      *   )
@@ -54,8 +39,8 @@ class FaqController extends Controller
 
     public function index()
     {
-        //TODO make a gate or policy to authorize admins
-        return FaqResource::collection(Faq::where('is_active',true)->get());
+        //TODO use cache
+        return FaqResource::collection(Faq::all());
     }
 
 

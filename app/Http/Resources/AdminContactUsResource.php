@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AdminFaqResource extends JsonResource
+class AdminContactUsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,16 @@ class AdminFaqResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id' => $this->resource['id'],
-            'question' => $this->resource['question'],
-            'answer' => $this->resource['answer'],
+        $data = [
+            'phoneNumber' => $this->resource['phone_number'],
+            'description' => $this->resource['description'],
             'is_active' => !$this->resource['deleted_at'] ? 'فعال':'غیر فعال',
+
         ];
+        // Only add email if it's not null
+        if ($this->resource['email'] !== null) {
+            $data['email'] = $this->resource['email'];
+        }
+        return $data;
     }
 }

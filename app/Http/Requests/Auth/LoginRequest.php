@@ -2,13 +2,16 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\User;
 use App\Rules\phoneNumber;
+use App\Rules\verifyCode;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules\Password;
 
 class LoginRequest extends FormRequest
 {
@@ -30,8 +33,9 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
         return [
-            'phone_number' => ['required', 'integer','size:11', new phoneNumber],
-            'phone_verify_code' => ['required', 'integer','size:5'],
+            'phone_number' => ['required', 'string','size:11', new phoneNumber],
+            'phone_verify_code' => ['required', 'string','size:5',new verifyCode],
+            'password' => [ 'nullable','confirmed', Password::defaults()],
         ];
     }
 

@@ -31,6 +31,7 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');
 //TODO maybe add route for logining with password
 
+//TODO change reset password from from email to phone number
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->name('password.email');
 
