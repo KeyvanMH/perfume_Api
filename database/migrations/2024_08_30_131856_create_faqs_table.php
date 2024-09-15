@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('question');
             $table->string('answer');
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 
