@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Brand>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class BrandFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,10 +17,9 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'logo' => fake()->filePath(),
-            'link' => fake()->text(20),
-            'description' => fake()->realText(200),
-            'title' => fake()->title(),
+            'name' => fake()->text(5),
+            'type' => fake()->randomElement(['perfume','watch']),
+            'description' => fake()->text(50),
             'slug' => fake()->slug(),
         ];
     }

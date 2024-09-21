@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Models\Product;
+use App\Http\Requests\StorePerfumeRequest;
+use App\Http\Requests\UpdatePerfumeRequest;
+use App\Models\Perfume;
 
-class ProductController extends Controller
+class PerfumeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(StorePerfumeRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Perfume $perfume)
     {
         //
     }
@@ -43,7 +43,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Perfume $perfume)
     {
         //
     }
@@ -51,7 +51,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, Product $product)
+    public function update(UpdatePerfumeRequest $request, Perfume $perfume)
     {
         //
     }
@@ -59,7 +59,7 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Perfume $perfume)
     {
         //
     }

@@ -12,7 +12,7 @@ class Brand extends Model
     use HasFactory , SoftDeletes;
     protected $guarded = [];
 
-    public function image():HasMany{
+    public function images():HasMany{
         return $this->hasMany(BrandImage::class);
     }
 }

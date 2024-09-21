@@ -28,6 +28,7 @@ return new class extends Migration
             $table->boolean('is_product_admin')->default(false);
             $table->boolean('is_blog_admin')->default(false);
             $table->boolean('is_super_admin')->default(false);
+//            $table->string('address')->nullable();
             $table->rememberToken()->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -9,6 +9,15 @@ use App\Http\Controllers\FaqController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test',function (Request $request){
+
+//    return $request->query()['key'];
+//    return $request->query();
+    $query = App\Models\User::query();
+    $query->where('is_super_admin','=',1);
+    $query->whereIn('is_blog_admin',['1','2']);
+    return $query->get();
+});
 require __DIR__.'/auth.php';
 
 //route for users
@@ -49,6 +58,7 @@ Route::get('/brand',[BrandController::class,'index']);
 Route::get('/brand/{brand:slug}',[BrandController::class,'show']);
 
 /* Product */
-Route::get('/product',);
+//Route::get('/product',);
+// filter
 
 

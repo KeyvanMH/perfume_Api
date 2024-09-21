@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('logo')->nullable();
             $table->string('link')->nullable();
+            $table->enum('type',['perfume','watch']);
             $table->text('description');
             $table->string('title');
             $table->string('slug')->unique();

@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BrandImage extends Model
+class Category extends Model
 {
-    use HasFactory , SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $guarded = [];
-    public function brand() {
-        return $this->belongsTo(Brand::class);
+
+    public function products() {
+        return $this->hasMany(Perfume::class);
     }
 }

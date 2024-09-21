@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Discount;
+use App\Models\PerfumeCommentReply;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,14 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        User::factory(10)->create();
+        User::factory(10)->create();
         // Call the FaqSeeder
         $this->call(FaqSeeder::class);
 
         // Call the ContactSeeder
         $this->call(ContactUsSeeder::class);
+
         $this->call(BrandSeeder::class);
         $this->call(BrandImageSeeder::class);
+
+        $this->call(CategorySeeder::class);
+        $this->call(DiscountSeeder::class);
+
+        $this->call(PerfumeSeeder::class);
+        $this->call(PerfumeImageSeeder::class);
+        $this->call(PerfumeCommentSeeder::class);
+        $this->call(PerfumeCommentReplySeeder::class);
+
+
 
     }
 }
