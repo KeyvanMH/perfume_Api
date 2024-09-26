@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Slug;
+use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBrandRequest extends FormRequest
@@ -24,7 +24,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'logo' => ['image', 'mimes:png,jpg,jpeg', 'max:5000'],
-            'slug' => [new Slug ,'unique:brands'],
+            'slug' => [new SlugRule ,'unique:brands'],
             'link' => ['string'],
             'description' => ['string'],
             'title' => ['string'],

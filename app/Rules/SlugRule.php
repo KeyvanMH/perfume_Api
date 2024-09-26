@@ -5,7 +5,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class Slug implements ValidationRule
+class SlugRule implements ValidationRule
 {
     /**
      * Run the validation rule.

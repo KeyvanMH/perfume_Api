@@ -18,21 +18,23 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Brand::class)->constrained();
             $table->foreignIdFor(Category::class)->constrained();
-//            $table->foreignIdFor(Discount::class)->nullable()->constrained()
-//                ->onDelete('set null');
             $table->string('name');
             $table->decimal('price',8,0);
             $table->integer('volume');
             $table->integer('quantity')->default(0);
             $table->string('description');
-            $table->string('warranty');
+            $table->string('slug')->unique();
+            $table->string('warranty')->nullable();
             $table->enum('gender',['male','female','sport']);
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(true);
+            $table->integer('sold')->default(0);
             //discount section
             $table->decimal('percent',4,2)->nullable();
             $table->decimal('amount',11,2)->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
+            $table->string('discount_card')->nullable();
+            $table->decimal('discount_card_percent',4,2)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

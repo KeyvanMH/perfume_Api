@@ -11,8 +11,8 @@ class Perfume extends Model
     use HasFactory , SoftDeletes;
     protected $guarded = [];
 
-    public function Brand() {
-        return $this->belongsTo(Brand::class);
+    public function brand() {
+    return $this->belongsTo(Brand::class);
     }
 
     public function comments() {

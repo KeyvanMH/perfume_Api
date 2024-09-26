@@ -24,8 +24,10 @@ class PerfumeFactory extends Factory
             "price" => fake()->numberBetween(0,99999999),
             'volume' => fake()->numberBetween(10,150),
             'quantity' => fake()->numberBetween(0,500),
+            'sold' => fake()->numberBetween(0,500),
             'description' => fake()->realText(),
-            'warranty' => fake()->text(20),
+            'slug' => fake()->slug(),
+            'warranty' => fake()->randomElement([fake()->text(20),NULL]),
             'gender' => fake()->randomElement(['male','female','sport']),
             'is_active' => fake()->randomElement([TRUE,FALSE]),
         ];

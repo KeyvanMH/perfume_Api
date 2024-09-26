@@ -2,17 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\PhoneNumberRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ContactUsRequest extends FormRequest
+class UpdatePerfumeBasedFactorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,9 +22,7 @@ class ContactUsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['string','size:11',new PhoneNumberRule()],
-            'description' => ['string','max:500'],
-            'email' => ['nullable', 'email']
+            //
         ];
     }
 }

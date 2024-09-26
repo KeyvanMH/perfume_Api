@@ -12,16 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discounts', function (Blueprint $table) {
+        Schema::create('warranties', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Perfume::class)->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->decimal('percent',4,2);
-            $table->decimal('amount',11,2)->nullable();
-            $table->timestamp('start_date')->default(now());
-            $table->timestamp('end_date');
-            $table->enum('status', ['active', 'inactive', 'expired'])->default('active');
+            $table->string('name');
+            $table->timestamp('end_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discounts');
+        Schema::dropIfExists('warranties');
     }
 };

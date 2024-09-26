@@ -3,8 +3,8 @@
 namespace App\Http\Requests\Auth;
 
 use App\Models\User;
-use App\Rules\phoneNumber;
-use App\Rules\verifyCode;
+use App\Rules\PhoneNumberRule;
+use App\Rules\VerifyCodeRule;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +33,8 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
         return [
-            'phone_number' => ['required', 'string','size:11', new phoneNumber],
-            'phone_verify_code' => ['required', 'string','size:5',new verifyCode],
+            'phone_number' => ['required', 'string','size:11', new PhoneNumberRule()],
+            'phone_verify_code' => ['required', 'string','size:5',new VerifyCodeRule],
             'password' => [ 'nullable','confirmed', Password::defaults()],
         ];
     }

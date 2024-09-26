@@ -17,6 +17,7 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => fake()->name(),
             'logo' => fake()->filePath(),
             'link' => fake()->text(20),
             'description' => fake()->realText(200),

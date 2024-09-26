@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('logo')->nullable();
             $table->string('link')->nullable();
             $table->enum('type',['perfume','watch']);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Slug;
+use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBrandRequest extends FormRequest
@@ -25,7 +25,7 @@ class StoreBrandRequest extends FormRequest
         return [
             //TODO make webp for production
             'logo' => ['image', 'mimes:png,jpg,jpeg,webp', 'max:5000'],
-            'slug' => ['required', 'unique:brands', new Slug],
+            'slug' => ['required', 'unique:brands', new SlugRule],
             'link' => ['string'],
             'description' => ['required', 'string'],
             'title' => ['required', 'string'],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePerfumeRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdatePerfumeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,18 @@ class UpdatePerfumeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            '.name' => ['string','max:255'],
+            'price' => ['numeric','regex:/^\d{1,8}$/'],
+            'volume' => ['integer','max:500'],
+            'slug' => ['required','string',new SlugRule(),'unique:perfumes'],
+            'warranty' => ['string'],
+            'gender' => ['in:man,woman,sport'],
+            'percent' => ['numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
+            'amount' => ['nullable','numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/',],
+            'start_date' => ['nullable','date_format:Y-m-d H:i:s',],
+            'end_date' => ['nullable','date_format:Y-m-d H:i:s',],
+            'discount_card' => ['nullable', 'string','max:255',],
+            'discount_card_percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
         ];
     }
 }

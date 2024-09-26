@@ -14,21 +14,7 @@ class AdminContactUsController extends Controller
     public function index($status)
     {
         //TODO use cache
-        switch ($status) {
-            case 'all':
-                return AdminContactUsResource::collection(ContactUs::withTrashed()->get());
-                break;
-            case 'activated':
-                return AdminContactUsResource::collection(ContactUs::all());
-                break;
-            case 'deleted':
-                return AdminContactUsResource::collection(ContactUs::onlyTrashed()->get());
-                break;
-            // Add more cases as needed
-            default:
-                // Handle unknown status
-                return ['response' => 'موردی یافت نشد!'];
-        }
+        return AdminContactUsResource::collection(ContactUs::withTrashed()->get());
     }
 
     /**

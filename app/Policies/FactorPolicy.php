@@ -2,24 +2,24 @@
 
 namespace App\Policies;
 
-use App\Models\Perfume;
+use App\Models\Factor;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class PerfumePolicy
+class FactorPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Perfume $perfume): bool
+    public function view(User $user, Factor $factor): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class PerfumePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Perfume $perfume): bool
+    public function update(User $user, Factor $factor): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class PerfumePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Perfume $perfume): bool
+    public function delete(User $user, Factor $factor): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class PerfumePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Perfume $perfume): bool
+    public function restore(User $user, Factor $factor): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class PerfumePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Perfume $perfume): bool
+    public function forceDelete(User $user, Factor $factor): bool
     {
         //
     }
