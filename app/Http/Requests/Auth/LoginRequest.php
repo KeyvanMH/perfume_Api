@@ -34,8 +34,8 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
         return [
             'phone_number' => ['required', 'string','size:11', new PhoneNumberRule()],
-            'phone_verify_code' => ['required', 'string','size:5',new VerifyCodeRule],
-            'password' => [ 'nullable','confirmed', Password::defaults()],
+            'phone_verify_code' => ['string','size:5',new VerifyCodeRule],
+            'password' => [Password::defaults()],
         ];
     }
 

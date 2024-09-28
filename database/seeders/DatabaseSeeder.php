@@ -26,12 +26,18 @@ class DatabaseSeeder extends Seeder
         $this->call(BrandImageSeeder::class);
 
         $this->call(CategorySeeder::class);
-        $this->call(DiscountSeeder::class);
-
         $this->call(PerfumeSeeder::class);
         $this->call(PerfumeImageSeeder::class);
         $this->call(PerfumeCommentSeeder::class);
         $this->call(PerfumeCommentReplySeeder::class);
+        $this->call(DiscountSeeder::class);
+
+        $this->call(FactorSeeder::class);
+        $this->call(PerfumeBasedFactorSeeder::class);
+        $this->call(WarrantySeeder::class);
+        $this->call(PerfumeSoldSeeder::class);
+
+
 
 
 

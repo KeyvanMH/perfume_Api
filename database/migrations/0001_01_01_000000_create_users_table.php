@@ -25,9 +25,7 @@ return new class extends Migration
             $table->bigInteger('post_number')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->boolean('is_product_admin')->default(false);
-            $table->boolean('is_blog_admin')->default(false);
-            $table->boolean('is_super_admin')->default(false);
+            $table->enum('role', ['super_admin', 'blog_admin', 'product_admin','user'])->default('user');
 //            $table->string('address')->nullable();
             $table->rememberToken()->nullable();
             $table->softDeletes();

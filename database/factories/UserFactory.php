@@ -29,6 +29,7 @@ class UserFactory extends Factory
             'last_name' => fake()->name(),
             'email' => fake()->email(),
             'post_number' => fake()->numberBetween(1000000000,9999999999),
+            'role' => $this->faker->randomElement(['super_admin', 'blog_admin', 'product_admin']),
 //            'sms_verify_code' => fake()->numberBetween(10000,99999),
 //            'remember_token' => Str::random(10),
         ];

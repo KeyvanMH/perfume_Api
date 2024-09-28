@@ -29,10 +29,10 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('sold')->default(0);
             //discount section
-            $table->decimal('percent',4,2)->nullable();
-            $table->decimal('amount',11,2)->nullable();
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
+            $table->decimal('discount_percent',4,2)->nullable();
+            $table->decimal('discount_amount',11,2)->nullable();
+            $table->timestamp('discount_start_date')->nullable();
+            $table->timestamp('discount_end_date')->nullable();
             $table->string('discount_card')->nullable();
             $table->decimal('discount_card_percent',4,2)->nullable();
             $table->softDeletes();

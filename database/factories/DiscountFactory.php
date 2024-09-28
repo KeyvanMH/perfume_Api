@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Perfume;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class DiscountFactory extends Factory
     public function definition(): array
     {
         return [
-            'perfume_id' => random_int(1,10),
+            'perfume_id' => Perfume::factory()->create(),
             'percent' => fake()->randomFloat(4,0,100),
             'amount' => fake()->numberBetween(0,99999999),
             'start_date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),

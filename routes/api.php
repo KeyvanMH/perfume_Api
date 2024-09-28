@@ -10,16 +10,13 @@ use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PerfumeAdminController;
 use App\Http\Controllers\PerfumeController;
-use App\Models\Perfume;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
 
-Route::get('/test',function (Request $request){
-    return $request->user()->id;
-})->middleware('auth:sanctum');
-
+Route::get('/test',function(){
+   return 'test';
+});
 /* guest routes */
     // FAQ routes
     Route::get('/faq',[FaqController::class,'index']);
@@ -41,11 +38,17 @@ Route::get('/test',function (Request $request){
 
     // Comment routes
 
+
     // Reply routes
+
+    // Image routes
+      //route for public images like perfume , main page , banners , brand , category
 
 
 /* user routes */
     Route::middleware(['auth:sanctum'])->group(function (){
+
+        //complete his credential
 
         // Comment routes
 
@@ -95,8 +98,25 @@ Route::get('/test',function (Request $request){
         Route::delete('product/{perfume:slug}',[PerfumeAdminController::class,'destroy']);
 
         // Product based factor routes
+            // get all perfumes and specific perfume
+            // get perfume of admins
+            // get all factors admin is super admin
+            // get the selling perfume of specific perfume
+            // get all selling perfume of the admin accoriding to his perfumes
+            // get user of specific product
+            // get product of specific factor
+            // update the exisiting perfume if it his his own , and only if he is superuser(specially for is_active column)
+            // delete the exisiting perfume if it his his own , and only if he is superuser
+
+
 
         // Factor routes
+            //get all factors
+            //get perfume of the factor
+            // get factor of admin
+            //delete factor and its dependency (it should be cascade and dynamic )
+
+        // Sold routes
 
         // Comment routes
 

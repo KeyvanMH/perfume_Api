@@ -17,7 +17,9 @@ class WarrantyFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'perfume_id' => rand(1,6),
+            'name' => fake()->text(39),
+            'end_date' => fake()->dateTimeBetween('now','+2 years'),
         ];
     }
 }

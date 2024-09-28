@@ -8,8 +8,11 @@ use App\Http\Requests\UpdatePerfumeRequest;
 use App\Http\Resources\PerfumeProductAdminResource;
 use App\Http\Resources\PerfumeSearchAdminResource;
 use App\Http\Resources\PerfumeSearchResource;
+use App\Models\Factor;
 use App\Models\Perfume;
+use App\Models\PerfumeBasedFactor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PerfumeAdminController extends Controller
 {
@@ -33,27 +36,53 @@ class PerfumeAdminController extends Controller
      */
     public function store(StorePerfumeRequest $request)
     {
-        //create factor and its perfumeBasedFactor and then add to the Perfume model
+        DB::transaction(function () use ($request) {
+            // Add values to factor
+            $factor = Factor::create([
+                'user_id' => $request->user()->id,
+            ]);
 
+            // Check if the perfume exists
+            $perfume = Perfume::where('slug', '=', $request->validated('slug'))->first();
 
+            if (is_null($perfume)) {
+                // Create new perfume if it doesn't exist
+                $perfume = Perfume::create([
+                    'name' => $request->validated('name'),
+                    'price' => $request->validated('price'),
+                    'volume' => $request->validated('volume'),
+                    'quantity' => $request->validated('quantity'),
+                    'description' => $request->validated('description'),
+                    'slug' => $request->validated('slug'),
+                    'warranty' => $request->validated('warranty'),
+                    'gender' => $request->validated('gender'),
+                    'percent' => $request->validated('percent') ?? null,
+                    'amount' => $request->validated('amount') ?? null,
+                    'start_date' => $request->validated('start_date'),
+                    'end_date' => $request->validated('end_date'),
+                    'discount_card' => $request->validated('discount_card'),
+                ]);
+            } else {
+                // Update existing perfume quantity
+                $perfume->quantity += $request->validated('quantity');
+                $perfume->save();
+            }
 
-        Perfume::create([
-            'name' => $request->validated('name'),
-            'price' => $request->validated('price'),
-            'volume' => $request->validated('volume'),
-            'quantity' => $request->validated('quantity'),
-            'description' => $request->validated('description'),
-            'slug' => $request->validated('slug'),
-            'warranty' => $request->validated('warranty'),
-            'gender' => $request->validated('gender'),
-            'percent' => $request->validated('percent')??NULL,
-            'amount' => $request->validated('name')??NULL,
-            'start_date' => $request->validated('name'),
-            'end_date' => $request->validated('name'),
-            'discount_card' => $request->validated('name'),
-
-
-        ]);    }
+            // Create perfume-based factor
+            PerfumeBasedFactor::create([
+                'factor_id' => $factor->id,
+                'perfume_id' => $perfume->id,
+                'name' => $request->validated('name'),
+                'price' => $request->validated('price'),
+                'volume' => $request->validated('volume'),
+                'quantity' => $request->validated('quantity'),
+                'description' => $request->validated('description')??NULL,
+                'slug' => $request->validated('slug'),
+                'gender' => $request->validated('gender'),
+                'warranty' => $request->validated('warranty') ?? null,
+            ]);
+        });
+    }
 
     /**
      * Display the specified resource.
@@ -80,6 +109,7 @@ class PerfumeAdminController extends Controller
      */
     public function destroy(Perfume $perfume)
     {
+        //TODO check if is it possible to delete data because of the sold table restrict
         $perfume->delete();
         return response()->json(['response' => 'ok']);
 

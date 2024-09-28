@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Warranty;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class WarrantySeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Warranty::factory(10)->create();
     }
 }
