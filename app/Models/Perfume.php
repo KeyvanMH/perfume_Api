@@ -23,9 +23,8 @@ class Perfume extends Model
         return $this->hasMany(PerfumeImage::class);
     }
 
-//    TODO check for empty foreign key's in perfume table
     public function discount() {
-        return $this->belongsTo(Discount::class);
+        return $this->hasMany(Discount::class);
     }
 
     public function category() {
@@ -35,4 +34,11 @@ class Perfume extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+    public function perfumeBasedFactor() {
+        return $this->hasMany(PerfumeBasedFactor::class);
+    }
+    public function sold() {
+        return $this->morphMany(Sold::class,'product');
+    }
+
 }

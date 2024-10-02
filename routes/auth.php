@@ -26,8 +26,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 //TODO this route is for sending sms request
 // Sms Verification route
-Route::post('/sms-request',[SmsVerificationController::class,'SmsRequest'])
-    ->middleware(['throttle:1,2']);
+Route::post('/sms-request',[SmsVerificationController::class,'SmsRequest']);
+//    ->middleware(['throttle:1,2']);
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->name('login');

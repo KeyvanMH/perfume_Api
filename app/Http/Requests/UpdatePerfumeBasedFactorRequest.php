@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\NumberRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePerfumeBasedFactorRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdatePerfumeBasedFactorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,13 @@ class UpdatePerfumeBasedFactorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'stock' => ['string','max:255',new NumberRule()],
+            'is_active' => ['in:true,false'],
+        ];
+    }
+    public function messages() {
+        return [
+            'is_active.in' => 'ورودی نامعتبر'
         ];
     }
 }

@@ -9,7 +9,11 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PerfumeAdminController;
+use App\Http\Controllers\FactorController;
+use App\Http\Controllers\PerfumeBasedFactorController;
 use App\Http\Controllers\PerfumeController;
+use App\Http\Middleware\ProductAdminMiddleware;
+use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -62,8 +66,7 @@ Route::get('/test',function(){
 
 
 /* admin routes */
-    //TODO add admin middleware
-    Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum']], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth:sanctum',ProductAdminMiddleware::class]], function () {
         // FAQ routes
         Route::get('faq', [AdminFaqController::class, 'index']);
         Route::post('faq', [AdminFaqController::class, 'store']);
@@ -92,29 +95,22 @@ Route::get('/test',function(){
 
         // Product routes
         Route::get('search/{query}',[PerfumeAdminController::class,'index']);
-        Route::get('product/{slug}',[PerfumeAdminController::class,'show']);
-        Route::post('product',[PerfumeAdminController::class,'store']);
-        Route::put('product/{perfume:slug}',[PerfumeAdminController::class,'update']);
-        Route::delete('product/{perfume:slug}',[PerfumeAdminController::class,'destroy']);
-
-        // Product based factor routes
-            // get all perfumes and specific perfume
-            // get perfume of admins
-            // get all factors admin is super admin
-            // get the selling perfume of specific perfume
-            // get all selling perfume of the admin accoriding to his perfumes
-            // get user of specific product
-            // get product of specific factor
-            // update the exisiting perfume if it his his own , and only if he is superuser(specially for is_active column)
-            // delete the exisiting perfume if it his his own , and only if he is superuser
-
-
+        Route::get('/perfume/based-factor/{slug}',[PerfumeAdminController::class,'indexBasedFactor']);
+        Route::get('perfume/{slug}',[PerfumeAdminController::class,'show']);
+        Route::post('perfume',[PerfumeAdminController::class,'store']);
+        Route::put('perfume/{perfume:slug}',[PerfumeAdminController::class,'update']);
+        Route::delete('perfume/{perfume:slug}',[PerfumeAdminController::class,'destroy']);
 
         // Factor routes
-            //get all factors
-            //get perfume of the factor
-            // get factor of admin
-            //delete factor and its dependency (it should be cascade and dynamic )
+        Route::get('/factor',[FactorController::class,'index']);
+        Route::get('/factor/{id}',[FactorController::class,'show']);
+        Route::post('/factor',[FactorController::class,'store']);
+        Route::delete('/factor/{factor}',[FactorController::class,'destroy']);
+        Route::get('/factor/personal/{user}',[FactorController::class,'indexAdminFactor']);
+
+        // Product based factor
+        Route::put('/factor-product/{id}',[PerfumeBasedFactorController::class,'update']);
+        Route::delete('/factor-product/{id}',[PerfumeBasedFactorController::class,'destroy']);
 
         // Sold routes
 
@@ -128,3 +124,10 @@ Route::get('/test',function(){
 
         // Warranty routes
     });
+
+/* super admin routes */
+Route::group(['prefix' => 'super-admin','middleware' => ['auth:sanctum',SuperAdminMiddleware::class]],function (){
+    // Products based factor for super admin
+    // get factors of specific admin
+
+});

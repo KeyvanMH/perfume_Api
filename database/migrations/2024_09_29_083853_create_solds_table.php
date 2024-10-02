@@ -13,20 +13,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('perfume_solds', function (Blueprint $table) {
-            //TODO make this morph for all products
+        Schema::create('solds', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Perfume::class)->constrained()
-                ->onDelete('restrict');
-            //TODO check if it makes foreign id to null
-            $table->foreignIdFor(User::class)->constrained()
+            $table->morphs('product');
+            $table->foreignIdFor(User::class)->nullable()->constrained()
                 ->onDelete('set null');
             $table->integer('number');
             $table->integer('price');
             $table->integer('price_with_discount');
             $table->integer('final_price');
             $table->integer('delivery_price');
-            $table->enum('is_delivered',[true,false]);
+            $table->boolean('is_delivered')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -36,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('perfume_solds');
+        Schema::dropIfExists('solds');
     }
 };

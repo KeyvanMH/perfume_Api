@@ -23,33 +23,30 @@ class StorePerfumeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'products' => ['required','array'],
-            'products.*.name' => ['required','string','max:255'],
-            'products.*.price' => ['required','numeric','regex:/^\d{1,8}$/'],
-            'products.*.volume' => ['required','integer','max:500'],
-            'products.*.slug' => ['required','string',new SlugRule(),'unique:perfumes'],
-            'products.*.warranty' => ['string'],
-            'products.*.description' => ['string','max:400'],
-            'products.*.gender' => ['required','in:male,female,sport'],
-            'products.*.percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
-            'products.*.amount' => ['nullable','numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/',],
-            'products.*.start_date' => ['nullable','date_format:Y-m-d H:i:s',],
-            'products.*.end_date' => ['nullable','date_format:Y-m-d H:i:s',],
-            'products.*.discount_card' => ['nullable', 'string','max:255',],
-            'products.*.discount_card_percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
+            'name' => ['required','string','max:255'],
+            'price' => ['required','numeric','regex:/^\d{1,8}$/'],
+            'volume' => ['required','integer','max:500'],
+            'slug' => ['required','string',new SlugRule(),'unique:perfumes'],
+            'warranty' => ['string'],
+            'description' => ['string','max:400'],
+            'gender' => ['required','in:male,female,sport'],
+            'percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
+            'amount' => ['nullable','numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/',],
+            'start_date' => ['nullable','date_format:Y-m-d H:i:s',],
+            'end_date' => ['nullable','date_format:Y-m-d H:i:s',],
+            'discount_card' => ['nullable', 'string','max:255',],
+            'discount_card_percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
             ];
     }
 
     public function messages()
     {
         return [
-            'products.required' => 'ورودی نامعتبر',
-            'products.array' => 'ورودی نامعتبر',
-            'products.*.name.required' => 'ورودی\' نام \' وارد نشده است ',
-            'products.*.price.required' => 'ورودی\' قیمت \' وارد نشده است.',
-            'products.*.quantity.required' => 'ورودی\' تعداد \' وارد نشده است',
-            'products.*.slug.required' => 'ورودی\' اسلاگ \' وارد نشده است',
-            'products.*.gender.required' => 'ورودی\' جنسیت \' وارد نشده است',
+            'name.required' => 'ورودی\' نام \' وارد نشده است ',
+            'price.required' => 'ورودی\' قیمت \' وارد نشده است.',
+            'quantity.required' => 'ورودی\' تعداد \' وارد نشده است',
+            'slug.required' => 'ورودی\' اسلاگ \' وارد نشده است',
+            'gender.required' => 'ورودی\' جنسیت \' وارد نشده است',
         ];
     }
 }

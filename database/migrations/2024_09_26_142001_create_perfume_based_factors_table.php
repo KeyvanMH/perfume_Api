@@ -23,11 +23,9 @@ return new class extends Migration
             $table->integer('volume');
             $table->decimal('price',8,0);
             $table->integer('stock')->default(0);
-            $table->string('description')->nullable();
             $table->integer('sold')->default(0);
             //TODO if the sold is equal to quantity , we make is_active false or when seller wants to stop selling it
             $table->boolean('is_active')->default(true);
-            $table->string('slug')->unique();
             $table->string('warranty')->nullable();
             $table->enum('gender',['male','female','sport']);
             $table->softDeletes();

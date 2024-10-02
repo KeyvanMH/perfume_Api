@@ -16,10 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(10)->create();
-        // Call the FaqSeeder
         $this->call(FaqSeeder::class);
 
-        // Call the ContactSeeder
         $this->call(ContactUsSeeder::class);
 
         $this->call(BrandSeeder::class);
@@ -35,11 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FactorSeeder::class);
         $this->call(PerfumeBasedFactorSeeder::class);
         $this->call(WarrantySeeder::class);
-        $this->call(PerfumeSoldSeeder::class);
-
-
-
-
-
+        $this->call(SoldSeeder::class);
     }
 }

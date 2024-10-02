@@ -20,11 +20,13 @@ class SmsVerificationController extends Controller
         }
         //check for sms rateLimiting
         $recentRequest = SmsRequest::where([['phone_number','=',$request->validated('phone_number')],['created_at','>=',Carbon::now()->subMinute(2)]])
-            ->get();
-        if(!empty($recentRequest)){
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if(isset($recentRequest)){
             $timeDiff = Carbon::now()->diffInSeconds($recentRequest->created_at);
-            $remainingTime = 120 - $timeDiff;
-            return response()->json(['response' => 'بعد از  '.$remainingTime.'ثانیه امتحان کنید'],429);
+//            $remainingTime = 120 + $timeDiff;
+            $remainingTime = (int)(120 + $timeDiff);
+            return response()->json(['response' => 'بعد از  '.$remainingTime.' ثانیه دوباره امتحان کنید  '],429);
         }
 
         $number = rand(10000,99999);

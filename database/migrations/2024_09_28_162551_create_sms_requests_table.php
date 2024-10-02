@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('phone_number');
             $table->integer('code');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

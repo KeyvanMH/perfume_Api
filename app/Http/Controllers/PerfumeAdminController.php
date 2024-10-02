@@ -32,56 +32,33 @@ class PerfumeAdminController extends Controller
 
 
     /**
+     * Display a listing of the FactorPerfumes created the selling perfume.
+     */
+    public function indexBasedFactor($slug){
+        //TODO make resource
+        return Perfume::withTrashed()->where('slug','=',$slug)->with('perfumeBasedFactor')->get();
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(StorePerfumeRequest $request)
     {
-        DB::transaction(function () use ($request) {
-            // Add values to factor
-            $factor = Factor::create([
-                'user_id' => $request->user()->id,
-            ]);
-
-            // Check if the perfume exists
-            $perfume = Perfume::where('slug', '=', $request->validated('slug'))->first();
-
-            if (is_null($perfume)) {
-                // Create new perfume if it doesn't exist
-                $perfume = Perfume::create([
-                    'name' => $request->validated('name'),
-                    'price' => $request->validated('price'),
-                    'volume' => $request->validated('volume'),
-                    'quantity' => $request->validated('quantity'),
-                    'description' => $request->validated('description'),
-                    'slug' => $request->validated('slug'),
-                    'warranty' => $request->validated('warranty'),
-                    'gender' => $request->validated('gender'),
-                    'percent' => $request->validated('percent') ?? null,
-                    'amount' => $request->validated('amount') ?? null,
-                    'start_date' => $request->validated('start_date'),
-                    'end_date' => $request->validated('end_date'),
-                    'discount_card' => $request->validated('discount_card'),
-                ]);
-            } else {
-                // Update existing perfume quantity
-                $perfume->quantity += $request->validated('quantity');
-                $perfume->save();
-            }
-
-            // Create perfume-based factor
-            PerfumeBasedFactor::create([
-                'factor_id' => $factor->id,
-                'perfume_id' => $perfume->id,
-                'name' => $request->validated('name'),
-                'price' => $request->validated('price'),
-                'volume' => $request->validated('volume'),
-                'quantity' => $request->validated('quantity'),
-                'description' => $request->validated('description')??NULL,
-                'slug' => $request->validated('slug'),
-                'gender' => $request->validated('gender'),
-                'warranty' => $request->validated('warranty') ?? null,
-            ]);
-        });
+        $perfume = Perfume::create([
+            'name' => $request->validated('name'),
+            'price' => $request->validated('price'),
+            'volume' => $request->validated('volume'),
+            'quantity' => $request->validated('quantity'),
+            'description' => $request->validated('description'),
+            'slug' => $request->validated('slug'),
+            'warranty' => $request->validated('warranty'),
+            'gender' => $request->validated('gender'),
+            'percent' => $request->validated('percent') ?? null,
+            'amount' => $request->validated('amount') ?? null,
+            'start_date' => $request->validated('start_date'),
+            'end_date' => $request->validated('end_date'),
+            'discount_card' => $request->validated('discount_card'),
+        ]);
     }
 
     /**
@@ -99,6 +76,7 @@ class PerfumeAdminController extends Controller
      */
     public function update(UpdatePerfumeRequest $request, Perfume $perfume)
     {
+        //TODO change category and brand
         return $perfume->updateOrFail($request->validated());
         //TODO change to resposne after checking if it works
 //        return response()->json(['response' => 'ok']);

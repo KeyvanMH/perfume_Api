@@ -49,4 +49,7 @@ class User extends Authenticatable
     public function replies() {
         return $this->hasMany(PerfumeCommentReply::class);
     }
+    public function factors(){
+        return $this->hasMany(Factor::class);
+    }
 }
