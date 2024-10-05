@@ -5,9 +5,248 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryAdminResource;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\CategoryFullAdminResource;
 use App\Models\Category;
-use Illuminate\Http\Request;
+/**
+ * @OA\Get(
+ *      path="/api/admin/category",
+ *      summary="گرفتن تمام کتگوری های موجود برای ادمین",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="path",
+ *          required=true,
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminCategory"),
+ *               },
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *           )
+ *       )
+ *  )
+ *
+ *
+ * @OA\Get(
+ *      path="/api/admin/category/{slug}",
+ *      summary="گرفتن اطلاعات مربوط به یک کتگوری خاص برای ادمین",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="path",
+ *          required=true,
+ *      ),
+ *     @OA\Parameter(
+ *          description="اسلاگ کتگوری مربوط در یو ار ال",
+ *          name="اسلاگ در یو ار ال",
+ *          in="path",
+ *          required=true,
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminFullCategory"),
+ *               },
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *           )
+ *       )
+ *  )
+ *
+ *
+ *
+ *
+ * @OA\Post(
+ *      path="/api/admin/category",
+ *      summary="اضافه کردن کتگوری ",
+ *          @OA\Parameter(
+ *           description="احراز هویت با توکن",
+ *           in="path",
+ *           name="access token",
+ *           required=true,
+ *       ),
+ *     @OA\RequestBody(
+ *          @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  @OA\Property(
+ *                      property="name",
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="type",
+ *                      enum={"perfume", "watch"},
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="description",
+ *                      type="string"
+ *                  ),
+ *                  @OA\Property(
+ *                      property="slug",
+ *                      type="string"
+ *                  ),
+ *                  example={"name": "woody orbal category", "type": "perfume" ,"description": "مخصوص فصل های گرم " , "slug": "woody-orbal"}
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK"
+ *           ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *           ),
+ *       )
+ *  )
+ *
+ *
+ *
+ * @OA\Put(
+ *       path="/api/admin/category/{category:slug}",
+ *       summary="تغییر کتگوری موجود",
+ *           @OA\Parameter(
+ *            description="احراز هویت با توکن",
+ *            in="path",
+ *            name="access token",
+ *            required=true,
+ *        ),@OA\Parameter(
+ *            description="اسلاگ سوال در روت",
+ *            in="path",
+ *            name="id",
+ *            required=true,
+ *        ),
+ *      @OA\RequestBody(
+ *           @OA\MediaType(
+ *               mediaType="application/json",
+ *               @OA\Schema(
+ *                   @OA\Property(
+ *                       property="name",
+ *                       type="string"
+ *                   ),
+ *                   @OA\Property(
+ *                       property="type",
+ *                       enum={"perfume", "watch"},
+ *                       type="string"
+ *                   ),
+ *                   @OA\Property(
+ *                       property="description",
+ *                       type="string"
+ *                   ),
+ *                   @OA\Property(
+ *                       property="slug",
+ *                       type="string"
+ *                   ),
+ *                   example={"question": "سوال مورد نظر", "answer": "جواب مورد نظر "}
+ *               )
+ *           )
+ *       ),
+ *       @OA\Response(
+ *            response=200,
+ *            description="OK"
+ *            ),
+ *       @OA\Response(
+ *            response=403,
+ *            description="unAuthorized"
+ *            ),
+ *        )
+ *   )
+ *
+ *
+ *
+ *
+ * @OA\Delete(
+ *        path="/api/admin/category/{category:slug}",
+ *        summary="حذف کتگوری موجود",
+ *            @OA\Parameter(
+ *             description="احراز هویت با توکن",
+ *             in="path",
+ *             name="access token",
+ *             required=true,
+ *         ),@OA\Parameter(
+ *             description="اسلاگ سوال در روت",
+ *             in="path",
+ *             name="id",
+ *             required=true,
+ *         ),
+ *        @OA\Response(
+ *             response=202,
+ *             description="OK"
+ *             ),
+ *        @OA\Response(
+ *             response=403,
+ *             description="unAuthorized"
+ *             ),
+ *         )
+ *    )
+ *
+ *
+ * @OA\Schema(
+ *     schema="AdminCategory",
+ *     title="  کتگوری ادمین",
+ *    	@OA\Property(
+ *          property="name",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="type",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="slug",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="is_active",
+ *          type="string",
+ *          default="فعال",
+ *      )
+ *    )
+ *
+ *
+ * @OA\Schema(
+ *     schema="AdminFullCategory",
+ *     title="   یک کتگوری برای ادمین",
+ *    	@OA\Property(
+ *          property="name",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="id",
+ *          type="integer"
+ *      ),
+ *    	@OA\Property(
+ *          property="type",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="description",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="slug",
+ *          type="string"
+ *      ),
+ *    	@OA\Property(
+ *          property="is_active",
+ *          type="string",
+ *          default="فعال",
+ *      )
+ *    )
+ */
 
 class CategoryAdminController extends Controller
 {
@@ -31,7 +270,7 @@ class CategoryAdminController extends Controller
             'description' => $request->validated('description'),
             'slug' => $request->validated('slug')
         ]);
-        return ['response' => 'ok'];
+        return response()->json(['responses' => 'ok'],201);
     }
 
     /**
@@ -40,7 +279,7 @@ class CategoryAdminController extends Controller
     public function show($slug)
     {
         $result = Category::withTrashed()->where('slug','=',$slug)->get();
-        return  CategoryAdminResource::collection($result);
+        return  CategoryFullAdminResource::collection($result);
     }
 
     /**
@@ -55,7 +294,7 @@ class CategoryAdminController extends Controller
             }
         }
         $category->save();
-        return ['response' => 'ok'];
+        return response()->json(['responses' => 'ok'],200);
     }
 
     /**
@@ -64,6 +303,6 @@ class CategoryAdminController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return ['response' => 'ok'];
+        return response()->json(['responses' => 'ok'],200);
     }
 }

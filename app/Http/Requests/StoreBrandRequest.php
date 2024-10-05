@@ -23,7 +23,6 @@ class StoreBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //TODO make webp for production
             'logo' => ['image', 'mimes:png,jpg,jpeg,webp', 'max:5000'],
             'slug' => ['required', 'unique:brands', new SlugRule],
             'link' => ['string'],

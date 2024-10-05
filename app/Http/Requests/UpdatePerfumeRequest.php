@@ -23,7 +23,7 @@ class UpdatePerfumeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            '.name' => ['string','max:255'],
+            'name' => ['string','max:255'],
             'price' => ['numeric','regex:/^\d{1,8}$/'],
             'volume' => ['integer','max:500'],
             'slug' => ['required','string',new SlugRule(),'unique:perfumes'],

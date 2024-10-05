@@ -32,5 +32,6 @@ class SendSmsVerification implements ShouldQueue
         Http::post('https://sms-api.example.com/send', [
             'to' => $this->phoneNumber,
             'message' => "Your verification code is: {$this->verificationCode}",
-        ]);    }
+        ]);
+    }
 }

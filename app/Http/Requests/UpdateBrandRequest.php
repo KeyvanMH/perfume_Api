@@ -28,7 +28,6 @@ class UpdateBrandRequest extends FormRequest
             'link' => ['string'],
             'description' => ['string'],
             'title' => ['string'],
-            'images.*' => [ 'max:5000','image', 'mimes:webp,jpeg,jpg,png'],
         ];
     }
     public function messages() {

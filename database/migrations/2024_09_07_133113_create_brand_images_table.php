@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignIdFor(Brand::class)->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-//            $table->string('name');
             $table->string('image_path');
             $table->string('alt')->nullable();
             $table->string('extension');

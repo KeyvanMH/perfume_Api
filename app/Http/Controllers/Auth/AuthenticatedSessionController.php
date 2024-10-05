@@ -6,9 +6,44 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\SmsRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Post(
+ *       path="/api/login",
+ *       summary="میتوانید با کد ارسالی یا پسورد لاگین و رجیستر کنید",
+ *      @OA\RequestBody(
+ *           @OA\MediaType(
+ *               mediaType="application/json",
+ *               @OA\Schema(
+ *                   @OA\Property(
+ *                       property="phone_number",
+ *                       type="string",
+ *                   ),
+ *                   @OA\Property(
+ *                       property="phone_verify_code",
+ *                       type="string"
+ *                   ),
+ *                   @OA\Property(
+ *                       property="password",
+ *                       type="string"
+ *                   ),
+ *               )
+ *           )
+ *       ),
+ *       @OA\Response(
+ *            response=201,
+ *            description="OK"
+ *            ),
+ *       @OA\Response(
+ *            response=403,
+ *            description="unAuthorized"
+ *            ),
+ *        )
+ *   )
+ **/
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,6 +52,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        //if he is already authenticated
         $validatedData = $request->validated();
 
         $phoneNumber = $validatedData['phone_number'];
@@ -46,7 +82,7 @@ class AuthenticatedSessionController extends Controller
 
         // If the user is not registered, create a new user
         $user = User::firstOrCreate(['phone_number' => $phoneNumber]);
-        $token = $user->createToken('accessToken');
+        $token = $user->createToken('accessToken',expiresAt: Carbon::now()->addMinute());
 
         return response()->json(['token' => $token->plainTextToken]);
 

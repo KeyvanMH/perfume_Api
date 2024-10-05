@@ -13,6 +13,276 @@ use App\Models\PerfumeBasedFactor;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+/**
+ * @OA\Get(
+ *      path="/api/admin/factor",
+ *      summary="گرفتن تمام کتگوری های موجود برای ادمین",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="header",
+ *          required=true
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminFactor")
+ *               }
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *       )
+ *  )
+ *
+ * @OA\Get(
+ *      path="/api/admin/factor/{id}",
+ *      summary="گرفتن اطلاعات مربوط به یک فاکتور خاص برای ادمین",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="header",
+ *          required=true
+ *      ),
+ *     @OA\Parameter(
+ *          description="ایدی فاکتور مربوط در یو ار ال",
+ *          name="id",
+ *          in="path",
+ *          required=true
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminFactor")
+ *               }
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *       )
+ *  )
+ *
+ * @OA\Get(
+ *      path="/api/admin/factor/personal/{userId}",
+ *      summary="گرفتن فاکتور های  مربوط به یک ادمین خاص",
+ *     @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          name="access token",
+ *          in="header",
+ *          required=true
+ *      ),
+ *     @OA\Parameter(
+ *          description="ایدی کاربر مربوط در یو ار ال",
+ *          name="userId",
+ *          in="path",
+ *          required=true
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK",
+ *           @OA\JsonContent(
+ *               oneOf={
+ *                   @OA\Schema(ref="#/components/schemas/AdminFactor")
+ *               }
+ *           )
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *       )
+ *  )
+ *
+ * @OA\Post(
+ *      path="/api/admin/factor",
+ *      summary="اضافه کردن فاکتور",
+ *      @OA\Parameter(
+ *           description="احراز هویت با توکن",
+ *           in="header",
+ *           name="access token",
+ *           required=true
+ *       ),
+ *     @OA\RequestBody(
+ *          @OA\MediaType(
+ *              mediaType="application/json",
+ *              @OA\Schema(
+ *                  @OA\Property(
+ *                      property="products",
+ *                      type="array",
+ *                      @OA\Items(
+ *                          @OA\Property(
+ *                              property="name",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="volume",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="price",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="quantity",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="slug",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="warranty",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="description",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="gender",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="percent",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="amount",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="start_date",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="end_date",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="discount_card",
+ *                              type="string"
+ *                          ),
+ *                          @OA\Property(
+ *                              property="discount_card_percent",
+ *                              type="string"
+ *                          )
+ *                      )
+ *                  ),
+ *                  example={"products":{{"name":"256","volume":"29","quantity":"510","description":"this is fuking description","price":"1000000","slug":"lahg-asdgkjah-agh-askgh-lkjfg","gender":"sport","percent":"22.12","end_date":"2011-03-03 14:14"},{"name":"256","volume":"29","quantity":"510","description":"this is fuking description","price":"1000000","slug":"lahg-asdgkjah-agh-askgh-lkjfg","gender":"sport","percent":"22.12","end_date":"2011-03-03 14:14"}}}
+ *              )
+ *          )
+ *      ),
+ *      @OA\Response(
+ *           response=200,
+ *           description="OK"
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *       )
+ *  )
+ *
+ * @OA\Delete(
+ *      path="/api/admin/factor/{id}",
+ *      summary="حذف فاکتور موجود و مشتقاتش (فقط سوپر ادمین و سازنده فاکتور توانایی پاک کردن آن را دارند)",
+ *      @OA\Parameter(
+ *          description="احراز هویت با توکن",
+ *          in="header",
+ *          name="access token",
+ *          required=true
+ *      ),
+ *      @OA\Parameter(
+ *          description="ایدی فاکتور در یو ار ال",
+ *          in="path",
+ *          name="id",
+ *          required=true
+ *      ),
+ *      @OA\Response(
+ *           response=202,
+ *           description="OK"
+ *       ),
+ *      @OA\Response(
+ *           response=403,
+ *           description="unAuthorized"
+ *       )
+ *  )
+ *
+ * @OA\Schema(
+ *     schema="AdminFactor",
+ *     title="همه فاکتور ها برای ادمین",
+ *     @OA\Property(
+ *          property="id",
+ *          type="integer"
+ *      ),
+ *     @OA\Property(
+ *          property="isActive",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="createdAt",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="updatedAt",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="userId",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="userName",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="userRole",
+ *          type="string"
+ *      ),
+ *     @OA\Property(
+ *          property="perfumeBasedFactor",
+ *          type="array",
+ *          @OA\Items(
+ *              @OA\Property(
+ *                  property="id",
+ *                  type="integer"
+ *              ),
+ *              @OA\Property(
+ *                  property="name",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="volume",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="price",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="stock",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="sold",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="isActive",
+ *                  type="string"
+ *              ),
+ *              @OA\Property(
+ *                  property="warranty",
+ *                  type="string"
+ *              )
+ *          )
+ *     )
+ * )
+ */
 
 class FactorController extends Controller
 {
@@ -21,7 +291,7 @@ class FactorController extends Controller
      */
     public function index()
     {
-        return FactorResource::collection(Factor::withTrashed()->with(['perfumeBasedFactor','user'])->get());
+        return FactorResource::collection(Factor::withTrashed()->with(['perfumeBasedFactor','user'])->paginate(15));
     }
 
 
@@ -111,8 +381,10 @@ class FactorController extends Controller
     }
 
     public function indexAdminFactor(User $user){
-        $factors = $user->factors()->with('perfumeBasedFactor')->get();
-
+        if($user->role != 'product_admin' or $user->role != 'super_admin'){
+            return response()->json(['response' => 'یوزر درخواستی ادمین نمیباشد'],404);
+        }
+        $factors = $user->factors()->with('perfumeBasedFactor')->paginate(15);
         return FactorResource::collection($factors);
     }
 

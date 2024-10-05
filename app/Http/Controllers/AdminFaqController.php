@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FaqRequest;
 use App\Http\Resources\AdminFaqResource;
 use App\Models\Faq;
-use Illuminate\Http\Request;
 /**
  * @OA\Get(
- *      path="api/faq/admin",
+ *      path="/api/admin/faq",
  *      summary="سوالات متداول برای ادمین همراه با سوالات غیرفعال",
  *     @OA\Parameter(
  *          description="احراز هویت با توکن",
@@ -36,7 +35,7 @@ use Illuminate\Http\Request;
  *
  *
  * @OA\Post(
- *      path="api/faq/admin",
+ *      path="/api/admin/faq",
  *      summary="افزودن به سوالات متداول",
  *          @OA\Parameter(
  *           description="احراز هویت با توکن",
@@ -74,7 +73,7 @@ use Illuminate\Http\Request;
  *
  *
  * @OA\Put(
- *       path="api/faq/admin/{id}",
+ *       path="/api/admin/faq/{id}",
  *       summary="تغییر سوال موجود",
  *           @OA\Parameter(
  *            description="احراز هویت با توکن",
@@ -118,7 +117,7 @@ use Illuminate\Http\Request;
  *
  *
  * @OA\Delete(
- *        path="api/faq/admin/{id}",
+ *        path="/api/admin/faq/{id}",
  *        summary="حذف سوال موجود",
  *            @OA\Parameter(
  *             description="احراز هویت با توکن",
@@ -177,7 +176,7 @@ class AdminFaqController extends Controller
     public function index()
     {
         //TODO use cache
-        return AdminFaqResource::collection(Faq::withTrashed()->get());
+        return AdminFaqResource::collection(Faq::withTrashed()->paginate());
     }
 
     /**

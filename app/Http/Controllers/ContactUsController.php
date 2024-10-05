@@ -4,7 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactUsRequest;
 use App\Models\ContactUs;
-
+/**
+ * @OA\Post(
+ * *      path="/api/contact-us",
+ * *      summary="فرم برای سفارش های خاص (ارتباط با ما)",
+ * *     @OA\RequestBody(
+ * *          @OA\MediaType(
+ * *              mediaType="application/json",
+ * *              @OA\Schema(
+ * *                  @OA\Property(
+ * *                      property="phone_number",
+ * *                      type="string"
+ * *                  ),
+ * *                  @OA\Property(
+ * *                      property="description",
+ * *                      type="string"
+ * *                  ),
+ *                    @OA\Property(
+ * *                      property="email",
+ * *                      type="string",
+ *                        description="nullable"
+ * *                  ),
+ * *                  example={"description": "سوال مورد نظر", "phone_number": "09331574190 ","email": "email@gmail.com "}
+ * *              )
+ * *          )
+ * *      ),
+ * *      @OA\Response(
+ * *           response=200,
+ * *           description="OK"
+ * *           ),
+ * *       )
+ * *  )
+ **/
 class ContactUsController extends Controller
 {
 

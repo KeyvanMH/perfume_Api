@@ -2,12 +2,109 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBrandRequest;
-use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandFullResource;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
-use Illuminate\Http\Request;
+/**
+ * @OA\Get(
+ *       path="/api/brand",
+ *       summary="گرفتن لیست تمام برند های موجود برای کاربر",
+ *       @OA\Response(
+ *            response=200,
+ *            description="OK",
+ *            @OA\JsonContent(
+ *                type="array",
+ *                @OA\Items(ref="#/components/schemas/brand")
+ *            )
+ *        )
+ *   )
+ *
+ * @OA\Get(
+ *       path="/api/brand/{brand:slug}",
+ *       summary="گرفتن اطلاعات کامل مربوط برند خاص",
+ *       description="اسلاگ مربوط به برند در یو ار ال  شود ",
+ *       @OA\Response(
+ *            response=200,
+ *            description="OK",
+ *            @OA\JsonContent(
+ *                ref="#/components/schemas/full_brand"
+ *            )
+ *        )
+ *   )
+ *
+ * @OA\Schema(
+ *      schema="brand",
+ *      title="برند های موجود برای کاربر",
+ *      @OA\Property(
+ *           property="logo_path",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="link",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="description",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="title",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="slug",
+ *           type="string"
+ *       )
+ * )
+ *
+ * @OA\Schema(
+ *      schema="full_brand",
+ *      title="اطلاعات کامل برند",
+ *      @OA\Property(
+ *           property="logo_path",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="link",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="description",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="title",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="slug",
+ *           type="string"
+ *       ),
+ *      @OA\Property(
+ *           property="image",
+ *           type="array",
+ *           @OA\Items(
+ *               @OA\Property(
+ *                   property="image_path",
+ *                   type="string"
+ *               ),
+ *               @OA\Property(
+ *                   property="alt",
+ *                   type="string"
+ *               ),
+ *               @OA\Property(
+ *                   property="extension",
+ *                   type="string"
+ *               ),
+ *               @OA\Property(
+ *                   property="size",
+ *                   type="string"
+ *               )
+ *           )
+ *       )
+ * )
+ */
+
 
 class BrandController extends Controller
 {
@@ -17,8 +114,7 @@ class BrandController extends Controller
     public function index()
     {
         //TODO use cache
-        //TODO use pagination
-        return BrandResource::collection(Brand::with('image')->get());
+        return BrandResource::collection(Brand::with('images')->paginate(15));
     }
 
 

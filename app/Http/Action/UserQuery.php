@@ -55,7 +55,6 @@ class UserQuery {
                 continue;
             }
             if(!is_array($urlParam)){
-            //TODO make sure it is array (has operator like eq in url)
                 continue;
             }
             $template = [];
@@ -128,23 +127,30 @@ class UserQuery {
         }
         $query->where($array[0]);
         unset($array[0]);
-
+        $brand = null;
+        $category = null;
         if(count($array) > 0){
             foreach($array as $outKey => $item){
                 foreach($item as $inKey => $value){
-                    if($value[0] == 'brand'){
-                        $query->whereHas('brand',function($query)use($value){
-                            $query->where('name',$value[2]);
-                        });
-                        unset($item[$inKey]);
-                    }
                     if($value[0] == 'category'){
-                        $query->whereHas('category',function ($query) use ($value){
-                            $query->where('name',$value[2]);
-                        });
-                        unset($item[$inKey]);
+                        $category = $value[2];
+                        unset($array[$outKey][$inKey]);
                     }
-                    $query->orWhere($item);
+                    if($value[0] == 'brand'){
+                        $brand = $value[2];
+                        unset($array[$outKey][$inKey]);
+                    }
+                }
+                $query->orWhere($array[$outKey]);
+                if ($category !== null){
+                    $query->whereHas('category',function ($query) use ($category){
+                        $query->where('name',$category);
+                    });
+                }
+                if ($brand !== null){
+                    $query->whereHas('brand',function($query)use($brand){
+                        $query->where('name',$brand);
+                    });
                 }
             }
         }
@@ -152,7 +158,7 @@ class UserQuery {
             $query->orderBy($this->sort[0],$this->sort[1]);
         }
         $query->with(['category','brand']);
-        return $query->get();
+        return $query->paginate(15);
     }
 
 

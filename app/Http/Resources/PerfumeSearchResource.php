@@ -22,7 +22,7 @@ class PerfumeSearchResource extends JsonResource
             'quantity' => $this->resource['quantity']??NULL,
             'warranty' => $this->resource['warranty']??NULL,
             'gender' => $this->resource['gender']??NULL,
-            'percent' => $this->resource['percent']??NULL,
+            'percent' => $this->resource['discount_percent']??NULL,
             'slug' => $this->resource['slug']??NULL,
             'category' => $this->resource['category']['name']??NULL,
             'brand' => $this->resource['brand']['name']??NULL,

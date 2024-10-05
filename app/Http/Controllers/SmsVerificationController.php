@@ -8,6 +8,28 @@ use App\Models\SmsRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+/**
+ * @OA\Post(
+ *       path="/api/sms-request",
+ *       summary="درخواست اس ام اس ",
+ *      @OA\RequestBody(
+ *           @OA\MediaType(
+ *               mediaType="application/json",
+ *               @OA\Schema(
+ *                   @OA\Property(
+ *                       property="phone_number",
+ *                       type="string"
+ *                   )
+ *               ),
+ *                  example={"phone_number":"09331574190"}
+ *           )
+ *       ),
+ *       @OA\Response(
+ *            response=201,
+ *            description="OK"
+ *        )
+ *   )
+ **/
 
 class SmsVerificationController extends Controller
 {
@@ -35,7 +57,7 @@ class SmsVerificationController extends Controller
 //            'code' => $number
             'code' => 11111
         ]);
-//        SendSmsVerification::dispatch($request->validated('phone_number'), $number);
+        SendSmsVerification::dispatch($request->validated('phone_number'), $number);
         return response()->json(['response' => 'کد ارسال شد'],200);
     }
 }

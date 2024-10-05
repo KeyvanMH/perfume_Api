@@ -15,12 +15,9 @@ use App\Http\Controllers\PerfumeController;
 use App\Http\Middleware\ProductAdminMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 require __DIR__.'/auth.php';
-
-Route::get('/test',function(){
-   return 'test';
-});
 /* guest routes */
     // FAQ routes
     Route::get('/faq',[FaqController::class,'index']);
@@ -37,8 +34,8 @@ Route::get('/test',function(){
     Route::get('/category/{category:slug}',[CategoryController::class,'show']);
 
     // Product routes
-    Route::get('search/',[PerfumeController::class,'index']);
-    Route::get('products/{product:slug}',[PerfumeController::class,'show']);
+    Route::get('/search/',[PerfumeController::class,'index']);
+    Route::get('/perfume/{perfume:slug}',[PerfumeController::class,'show']);
 
     // Comment routes
 
@@ -51,6 +48,7 @@ Route::get('/test',function(){
 
 /* user routes */
     Route::middleware(['auth:sanctum'])->group(function (){
+
 
         //complete his credential
 
@@ -74,15 +72,15 @@ Route::get('/test',function(){
         Route::delete('faq/{faq}', [AdminFaqController::class, 'destroy']);
 
         // Contact Us routes
-        Route::get('contact-us', [AdminContactUsController::class, 'index']);
-        Route::delete('contact-us/{contactUs}', [AdminContactUsController::class, 'destroy']);
+        Route::get('/contact-us', [AdminContactUsController::class, 'index']);
+        Route::delete('/contact-us/{contactUs}', [AdminContactUsController::class, 'destroy']);
 
         // Brand routes
         Route::get('brand', [BrandAdminController::class, 'index']);
         Route::get('brand/{slug}', [BrandAdminController::class, 'show']);
         Route::post('brand', [BrandAdminController::class, 'store']);
         Route::put('brand/{brand:slug}', [BrandAdminController::class, 'update']);
-        Route::delete('brand/image', [BrandAdminController::class, 'destroyImage']);
+        Route::delete('brand/image/{brandImage}', [BrandAdminController::class, 'destroyImage']);
         Route::delete('brand/{brand:slug}', [BrandAdminController::class, 'destroy']);
         Route::post('brand/image/{brand:slug}', [BrandAdminController::class, 'storeImage']);
 
@@ -94,12 +92,12 @@ Route::get('/test',function(){
         Route::delete('category/{category:slug}', [CategoryAdminController::class, 'destroy']);
 
         // Product routes
-        Route::get('search/{query}',[PerfumeAdminController::class,'index']);
+        Route::get('/search/{query}',[PerfumeAdminController::class,'index']);
         Route::get('/perfume/based-factor/{slug}',[PerfumeAdminController::class,'indexBasedFactor']);
-        Route::get('perfume/{slug}',[PerfumeAdminController::class,'show']);
-        Route::post('perfume',[PerfumeAdminController::class,'store']);
-        Route::put('perfume/{perfume:slug}',[PerfumeAdminController::class,'update']);
-        Route::delete('perfume/{perfume:slug}',[PerfumeAdminController::class,'destroy']);
+        Route::get('/perfume/{slug}',[PerfumeAdminController::class,'show']);
+        Route::post('/perfume',[PerfumeAdminController::class,'store']);
+        Route::put('/perfume/{perfume:slug}',[PerfumeAdminController::class,'update']);
+        Route::delete('/perfume/{perfume:slug}',[PerfumeAdminController::class,'destroy']);
 
         // Factor routes
         Route::get('/factor',[FactorController::class,'index']);
@@ -109,6 +107,7 @@ Route::get('/test',function(){
         Route::get('/factor/personal/{user}',[FactorController::class,'indexAdminFactor']);
 
         // Product based factor
+        Route::get('/factor-product/{id}',[PerfumeBasedFactorController::class,'show']);
         Route::put('/factor-product/{id}',[PerfumeBasedFactorController::class,'update']);
         Route::delete('/factor-product/{id}',[PerfumeBasedFactorController::class,'destroy']);
 
