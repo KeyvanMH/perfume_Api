@@ -10,6 +10,9 @@ class PerfumeCommentReply extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = [];
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 
     public function comment() {
         return $this->belongsTo(PerfumeComment::class);

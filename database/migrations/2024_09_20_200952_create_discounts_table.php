@@ -14,14 +14,17 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Perfume::class)->constrained()
+            $table->foreignIdFor(Perfume::class)
+                ->nullable()
+                ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->string('description')->nullable();
+            $table->string('name');
             $table->decimal('percent',4,2);
-            $table->decimal('amount',11,2)->nullable();
             $table->timestamp('start_date')->default(now());
             $table->timestamp('end_date');
-            $table->enum('status', ['active', 'inactive', 'expired'])->default('active');
+            $table->boolean('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -34,4 +37,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('discounts');
     }
+
 };

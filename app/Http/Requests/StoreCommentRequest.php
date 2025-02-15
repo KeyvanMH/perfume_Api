@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDiscountRequest extends FormRequest
+class StoreCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'comment' => ['required','string','max:255','min:1']
+        ];
+    }
+    public function messages() {
+        return [
+            'comment.required' => 'ورودی برای کامنت وارد کنید.'
         ];
     }
 }

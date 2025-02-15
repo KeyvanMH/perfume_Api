@@ -52,12 +52,13 @@ class SmsVerificationController extends Controller
         }
 
         $number = rand(10000,99999);
+        //TODO: database query should be in in event queue too
         SmsRequest::create([
             'phone_number' => $request->validated('phone_number'),
 //            'code' => $number
             'code' => 11111
         ]);
-        SendSmsVerification::dispatch($request->validated('phone_number'), $number);
+//        SendSmsVerification::dispatch($request->validated('phone_number'), $number);
         return response()->json(['response' => 'کد ارسال شد'],200);
     }
 }

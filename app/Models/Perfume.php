@@ -40,5 +40,4 @@ class Perfume extends Model
     public function sold() {
         return $this->morphMany(Sold::class,'product');
     }
-
 }

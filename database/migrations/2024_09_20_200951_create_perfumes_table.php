@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Brand::class)->constrained();
             $table->foreignIdFor(Category::class)->constrained();
+            //todo index the columns
             $table->string('name');
             $table->decimal('price',8,0);
             $table->integer('volume');

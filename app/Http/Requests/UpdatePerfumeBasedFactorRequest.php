@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Const\DefaultConst;
 use App\Rules\NumberRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -29,7 +30,7 @@ class UpdatePerfumeBasedFactorRequest extends FormRequest
     }
     public function messages() {
         return [
-            'is_active.in' => 'ورودی نامعتبر'
+            'is_active.in' => DefaultConst::INVALID_INPUT
         ];
     }
 }

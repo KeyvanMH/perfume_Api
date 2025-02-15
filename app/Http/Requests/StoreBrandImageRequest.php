@@ -22,7 +22,8 @@ class StoreBrandImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images.*' => ['max:5000', 'image', 'mimes:webp'],
+            'images' => ['required','array'],
+            'images.*' => ['required','max:5000', 'image', 'mimes:png,jpg,jpeg,webp'],
         ];
     }
 

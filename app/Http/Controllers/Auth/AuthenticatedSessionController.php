@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Const\DefaultConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\SmsRequest;
@@ -45,7 +46,7 @@ use Illuminate\Support\Facades\Auth;
  *   )
  **/
 
-class AuthenticatedSessionController extends Controller
+class   AuthenticatedSessionController extends Controller
 {
     /**
      * Handle an incoming authentication request.
@@ -62,13 +63,13 @@ class AuthenticatedSessionController extends Controller
 
         // Check for invalid input
         if (!$phoneVerifyCode and !$password) {
-            return response()->json(['response' => 'ورودی نامعتبر'], 404);
+            return response()->json(['response' =>DefaultConst::INVALID_INPUT], 404);
         }
 
         // Validate the password if provided
         if ($password) {
             if (!Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password])) {
-                return response()->json(['response' => 'ورودی نامعتبر']);
+                return response()->json(['response' =>DefaultConst::INVALID_INPUT]);
             }
         } elseif ($phoneVerifyCode) {
             // Get the latest SMS verification for the phone number
@@ -76,13 +77,14 @@ class AuthenticatedSessionController extends Controller
 
             // Check if the SMS verification code is valid
             if (empty($dbPhoneNumber) or $dbPhoneNumber->code != $phoneVerifyCode) {
-                return response()->json(['response' => 'ورودی نامعتبر']);
+                return response()->json(['response' => DefaultConst::INVALID_INPUT]);
             }
         }
 
         // If the user is not registered, create a new user
         $user = User::firstOrCreate(['phone_number' => $phoneNumber]);
-        $token = $user->createToken('accessToken',expiresAt: Carbon::now()->addMinute());
+//        $token = $user->createToken('accessToken',expiresAt: Carbon::now()->addHours(12));
+        $token = $user->createToken('accessToken',expiresAt: null);
 
         return response()->json(['token' => $token->plainTextToken]);
 

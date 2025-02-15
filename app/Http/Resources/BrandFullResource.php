@@ -20,7 +20,7 @@ class BrandFullResource extends JsonResource
             'description' => $this->resource['description'],
             'title' => $this->resource['title'],
             'slug' => $this->resource['slug'],
-            'images' => BrandImageResource::collection($this->resource['image']),
+            'images' => $this->when(isset($this->resource['images']),BrandImageResource::collection($this->resource['images'])),
         ];
     }
 }

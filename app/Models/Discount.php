@@ -12,7 +12,7 @@ class Discount extends Model
 
     protected $guarded = [];
 
-    public function product() {
-        return $this->hasMany(Perfume::class);
-    }
+//    public function product() {
+//        return $this->belongsTo(Perfume::class);
+//    }
 }

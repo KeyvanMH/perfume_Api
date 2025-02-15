@@ -2,34 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Const\DefaultConst;
 use App\Http\Requests\StoreBrandImageRequest;
-use App\Http\Requests\UpdateBrandImageRequest;
+use App\Models\Brand;
 use App\Models\BrandImage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class BrandImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBrandImageRequest $request)
-    {
-        //
+    public function store(StoreBrandImageRequest $request , Brand $brand) {
+        if(!$request->hasFile('images') || !$request->validated('images')) {
+            return response()->json(['message' => DefaultConst::NOT_FOUND], 404);
+        }
+            DB::transaction(function () use ($request, $brand) {
+                $imagesData = collect($request->file('images'))->map(function ($image) use ($brand) {
+                    if ($image === false) {
+                        throw new \Exception('File upload failed');
+                    }
+                    return [
+                        'image_path' => $image->store('public/brandsImage'),
+                        'alt' => $image->getClientOriginalName(),
+                        'extension' => $image->extension(),
+                        'size' => $image->getSize(),
+                        'brand_id' => $brand->id,
+                    ];
+                });
+
+                $brand->images()->createMany($imagesData);
+            });
+            return response()->json(['response' => 'ok'], 200);
     }
 
     /**
@@ -37,30 +44,55 @@ class BrandImageController extends Controller
      */
     public function show(BrandImage $brandImage)
     {
-        //
+        // Construct the path to the image
+        $path = $brandImage->image_path;
+        // Check if the image exists
+        if (!Storage::exists($path)) {
+            return response()->json(['message' => DefaultConst::NOT_FOUND], Response::HTTP_NOT_FOUND);
+        }
+        $imageContent = Storage::get($path);
+        $mimeType = Storage::mimeType($path);
+        return response($imageContent, Response::HTTP_OK)
+            ->header('Content-Type', $mimeType);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(BrandImage $brandImage)
-    {
-        //
-    }
 
     /**
-     * Update the specified resource in storage.
+     * remove specific Image
      */
-    public function update(UpdateBrandImageRequest $request, BrandImage $brandImage)
-    {
-        //
+    public function destroy(BrandImage $brandImage) {
+        //check the input for the image to exist in DB , delete the image and index in table, return response
+        if(Storage::exists($brandImage->image_path)){
+            Storage::delete($brandImage->image_path);
+        }
+        $brandImage->delete();
+        return response()->json(['response' => 'ok'],200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(BrandImage $brandImage)
-    {
-        //
+    public function showLogo(Brand $brand){
+        $path = $brand->logo;
+        if(!$path){
+            return response()->json(['message' => DefaultConst::NOT_FOUND]);
+        }
+        // Check if the image exists
+        if (!Storage::exists($path)) {
+            return response()->json(['message' => DefaultConst::NOT_FOUND], Response::HTTP_NOT_FOUND);
+        }
+        $imageContent = Storage::get($path);
+        $mimeType = Storage::mimeType($path);
+        return response($imageContent, Response::HTTP_OK)
+            ->header('Content-Type', $mimeType);
     }
+
+    public function destroyAllImage(Brand $brand) {
+        $images = $brand->images;
+        foreach ($images as $image) {
+            if (Storage::exists($image->image_path)) {
+                Storage::delete($image->image_path);
+            }
+            $image->delete();
+        }
+        return response()->json(['response' => 'ok'], 200);
+    }
+
 }

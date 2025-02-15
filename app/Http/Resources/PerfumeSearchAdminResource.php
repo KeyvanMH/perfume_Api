@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Action\Discount\CalculateDiscount;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,6 +18,7 @@ class PerfumeSearchAdminResource extends JsonResource
         return [
             'name' => $this->resource['name'],
             'price' => $this->resource['price'],
+            'priceWithDiscount' => CalculateDiscount::show($this->resource['price'],$this->resource['discount_percent']),
             'volume' => $this->resource['volume'],
             'quantity' => $this->resource['quantity'],
             'slug' => $this->resource['slug'],

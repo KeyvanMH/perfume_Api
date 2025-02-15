@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class destroyBrandImageRequest extends FormRequest
+class StoreCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +23,7 @@ class destroyBrandImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'imageName' => ['required','string'],
+            'product_id' => ['required','string']
         ];
     }
 }

@@ -28,7 +28,7 @@ class StoreBrandRequest extends FormRequest
             'link' => ['string'],
             'description' => ['required', 'string'],
             'title' => ['required', 'string'],
-            'images.*' => [ 'max:5','image', 'mimes:webp,jpeg,jpg,png'],
+            'images.*' => [ 'max:5000','image', 'mimes:webp,jpeg,jpg,png'],
         ];
     }
 

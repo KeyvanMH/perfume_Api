@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Action;
+namespace App\Http\Action\Filter;
 
-use App\Models\Perfume;
+use App\Http\Action\Filter\UserProductQuery;
+use App\Http\Const\DefaultConst;
 
-class UserQuery {
-
-    protected array $urlQuery;
-    protected array $sort;
-
+class PerfumeFilter extends UserProductQuery {
     protected array $operator = [
         'gt' => '>',
         'lt' => '<',
         'eq' => '=',
         'nq' => '!='
     ];
+
     protected array $safeParam = [
         'name' => ['eq'],
         'quantity' => ['eq'],
@@ -25,15 +23,18 @@ class UserQuery {
         'brand' => ['eq'],
         'category' => ['eq'],
     ];
+
     protected array $safeSort = [
         'priceAsc' => ['price','asc'],
         'priceDesc' => ['price','desc'],
         'sold' => ['sold','asc'],
         'newest' => ['created_at','asc'],
     ];
-    public function __Construct($query){
+    public function queryRetriever($query) {
         $this->urlQuery = $query;
+        return $this;
     }
+
     public function sanitize() {
         //delete warranty and sort from the array
         foreach($this->urlQuery as $key => $value){
@@ -46,6 +47,7 @@ class UserQuery {
                 }
             }
         }
+        return $this;
     }
     public function arrayBuilder() {
         $lastTemplate = [];
@@ -61,6 +63,7 @@ class UserQuery {
             foreach ($operators as $operator){
                 $urlValue = $urlParam[$operator]??NULL;
                 if(!$urlValue){
+                    $template = $lastTemplate;
                     continue;
                 }
                 if(is_array($urlValue) and count($urlValue) > 0){
@@ -71,7 +74,7 @@ class UserQuery {
                         }else{
                             foreach ($lastTemplate as $item){
                                 //single where
-                                    $template[] = array_merge($item, [[$param, $this->operator[$operator], $value]]);
+                                $template[] = array_merge($item, [[$param, $this->operator[$operator], $value]]);
                             }
                         }
                     }
@@ -100,18 +103,16 @@ class UserQuery {
             $lastTemplate = [];
             $lastTemplate = $template;
             $template = [];
-
         }
-        return $lastTemplate;
+        $this->arrayForQuery = $lastTemplate;
+        return $this;
     }
 
-    public function queryBuilder($array){
-        if(!$array or !is_array($array) or count($array) == 0){
+    public function queryBuilder($query){
+        $array = $this->arrayForQuery;
+        if(!$array or count($array) == 0){
             return [];
         }
-        $query = Perfume::query();
-        //TODO is_active
-//        $query->where('is_active',1);
         foreach($array[0] as $key => $item){
             if ($item[0] == 'brand' ){
                 $query->whereHas('brand' , function($query)use($item){
@@ -158,8 +159,6 @@ class UserQuery {
             $query->orderBy($this->sort[0],$this->sort[1]);
         }
         $query->with(['category','brand']);
-        return $query->paginate(15);
+        return $query->paginate(DefaultConst::PAGINATION_NUMBER);
     }
-
-
 }

@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Const\DefaultConst;
+use App\Rules\BrandExistenceRule;
+use App\Rules\CategoryExistenceRule;
 use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,6 +27,8 @@ class StorePerfumeBasedFactorRequest extends FormRequest
     {
         return [
             'products' => ['required','array'],
+            'products.*.category' => ['required','string',new CategoryExistenceRule(),new SlugRule()],
+            'products.*.brand' => ['required','string',new BrandExistenceRule,new SlugRule()],
             'products.*.name' => ['required','string','max:255'],
             'products.*.price' => ['required','numeric','regex:/^\d{1,8}$/'],
             'products.*.volume' => ['required','integer','max:200'],
@@ -32,20 +37,24 @@ class StorePerfumeBasedFactorRequest extends FormRequest
             'products.*.warranty' => ['string','max:255'],
             'products.*.description' => ['required','string','max:255'],
             'products.*.gender' => ['required','in:male,female,sport'],
-            'products.*.percent' => ['nullable','numeric','regex:/^\d{1,2}(\.\d{1,2})?$/',],
+            'products.*.discount_percent' => ['nullable','numeric','regex:/^\d{1,2}(\.\d{1,2})?$/',],
             'products.*.amount' => ['nullable','numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/',],
             'products.*.start_date' => ['nullable','date_format:Y-m-d H:i',],
             'products.*.end_date' => ['nullable','date_format:Y-m-d H:i',],
             'products.*.discount_card' => ['nullable', 'string','max:255',],
             'products.*.discount_card_percent' => ['nullable','numeric','regex:/^\d{1,2}(\.\d{1,2})?$/',],
+            'products.*.images' => ['array'],
+            'products.*.images.*' => ['string'],
         ];
     }
 
     public function messages()
     {
         return [
-            'products.required' => 'ورودی نامعتبر',
-            'products.array' => 'ورودی نامعتبر',
+            'products.required' => DefaultConst::INVALID_INPUT,
+            'products.array' => DefaultConst::INVALID_INPUT,
+            'products.*.category.required' => 'ورودی \'دسته بندی\' وارد نشده است ',
+            'products.*.brand.required' => 'ورودی \'برند\' وارد نشده است ',
             'products.*.name.required' => 'ورودی \'نام\' وارد نشده است ',
             'products.*.volume.required' => 'ورودی \'حجم\' وارد نشده است ',
             'products.*.price.required' => 'ورودی \'قیمت\' وارد نشده است.',

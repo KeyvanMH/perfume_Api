@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Http\Const\DefaultConst;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
@@ -17,7 +18,7 @@ class VerifyCodeRule implements ValidationRule
         $number = [0,1,2,3,4,5,6,7,8,9];
         foreach (str_split($value) as $index){
             if(!in_array($index,$number)){
-                $fail('ورودی نامعتبر!');
+                $fail(DefaultConst::INVALID_INPUT);
             }
         }
     }

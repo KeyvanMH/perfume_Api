@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
         $this->call(PerfumeImageSeeder::class);
         $this->call(PerfumeCommentSeeder::class);
         $this->call(PerfumeCommentReplySeeder::class);
-        $this->call(DiscountSeeder::class);
+//        $this->call(DiscountSeeder::class);
 
         $this->call(FactorSeeder::class);
         $this->call(PerfumeBasedFactorSeeder::class);
-        $this->call(WarrantySeeder::class);
-        $this->call(SoldSeeder::class);
+//        $this->call(WarrantySeeder::class);
+//        $this->call(SoldSeeder::class);
     }
 }

@@ -19,10 +19,11 @@ class FactorResource extends JsonResource
             'isActive' => $this->resource['deleted_at']?'غیر فعال':'فعال',
             'createdAt' => $this->resource['created_at'],
             'updatedAt' => $this->resource['updated_at'],
-            'userId' => $this->resource['user']['id'],
-            'userName' => $this->resource['user']['last_name'],
-            'userRole' => $this->resource['user']['role'],
-            'perfumesOfFactor' =>  PerfumeBasedFactorResource::collection($this->resource['perfumeBasedFactor']),
+//            'userId' => $this->resource['user']['id'],
+//            'userName' => $this->resource['user']['last_name'],
+//            'userRole' => $this->resource['user']['role'],
+            'user' => $this->when(isset($this->resource['user']),new UserForAdminResource($this->resource['user'])),
+            'perfumesOfFactor' =>  $this->when(isset($this->resource['perfumeBasedFactor']),PerfumeBasedFactorResource::collection($this->resource['perfumeBasedFactor'])),
         ];
     }
 }

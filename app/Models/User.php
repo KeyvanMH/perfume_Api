@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class User extends Authenticatable
 {
@@ -42,6 +44,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function comments() {
         return $this->hasMany(PerfumeComment::class);
     }
@@ -51,5 +54,11 @@ class User extends Authenticatable
     }
     public function factors(){
         return $this->hasMany(Factor::class);
+    }
+    public function city(){
+        return $this->belongsTo(City::class);
+    }
+    public function hasValidAddress():bool{
+        return $this->origin_city_id;
     }
 }

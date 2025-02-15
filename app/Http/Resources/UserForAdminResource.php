@@ -23,8 +23,8 @@ class UserForAdminResource extends JsonResource
             'postNumber' => $this->resource['post_number'],
             'isEmailVerified' => $this->resource['email_verified_at']?'فعال':'غیر فعال',
             'role' => $this->resource['role'],
-            'createdAt' => $this->resource['post_number'],
-
+            'createdAt' => $this->resource['created_at'],
+            'isActive' => !$this->resource['deleted_at']?'فعال':'پاک شده',
         ];
     }
 }
