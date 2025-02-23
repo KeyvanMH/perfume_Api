@@ -30,14 +30,23 @@ use App\Http\Controllers\ShoppingManagementController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ProductAdminMiddleware;
 use App\Http\Middleware\SuperAdminMiddleware;
+use App\Models\Perfume;
 use App\Models\User;
 use Dedoc\Scramble\Scramble;
 use Illuminate\Http\File;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Redis;
+
 Route::get('/test',function() {
+    $query = Perfume::query();
+
+     $query->orWhere([['price','=',5231683],['volume','=',50]]);
+     return $query->orWhere([['price','=',5231683],['volume','=',50]])->get();
+
 });
 
 require __DIR__.'/auth.php';
@@ -79,7 +88,7 @@ require __DIR__.'/auth.php';
 
 
 /* user routes */
-    Route::middleware(['auth:sanctum','customWebMiddleware'])->group(function (){
+    Route::middleware(['auth:sanctum','customWebMiddleware','extendCartTime'])->group(function (){
         //complete his credential
         Route::get('/credentials',[CredentialController::class,'show']);
         Route::put('/credentials',[CredentialController::class,'update']);
@@ -96,8 +105,8 @@ require __DIR__.'/auth.php';
         // shopping routes
         Route::get('/cart',[CartController::class,'index']);
         Route::post('/cart',[CartController::class,'store']);
-        Route::delete('/cart/{id}',[CartController::class,'destroy']);
-        Route::delete('cart',[CartController::class,'destroyAll']);
+        Route::delete('/cart',[CartController::class,'destroy']);
+        Route::delete('flush-cart',[CartController::class,'destroyAll']);
 
         //discount cart route
         Route::get('/discount-card',[ApplyDiscountController::class,'index']);

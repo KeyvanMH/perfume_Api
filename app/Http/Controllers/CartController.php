@@ -3,21 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Http\Const\DefaultConst;
+use App\Http\Requests\DeleteCartRequest;
 use App\Http\Requests\StoreCartRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Perfume;
+use App\Traits\ReserveProductManagement;
+use App\Traits\GetProduct;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
+use App\Exceptions\ErrorException;
 
 class CartController extends Controller
 {
+    use GetProduct,ReserveProductManagement;
 
     /**
      * Display a listing of the cart.
      */
     public function index()
     {
-        return Session::get('products')??[];
+        $userId = auth()->user()->id;
+        $products = [];
+        foreach(DefaultConst::PRODUCT_TYPE as $productType) {
+            $cart = Redis::hgetall("cart:product_type=$productType&user_id=$userId");
+            if(empty($cart)){
+                continue;
+            }
+            foreach ($cart as $productId => $quantity) {
+                $product = $this->getProductByType($productId, $productType);
+                $products[] = $product;
+            }
+        }
+        return ProductResource::collection($products);
     }
 
 
@@ -26,17 +45,17 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-        $productId = $request->validated('product_id');
-        $perfume = Perfume::find($productId);
-        //todo add to reserve product table
-//        $productCountInCart = (Session::get($productId)??0)+1;
-        // check for any error in input or session
-        if(!$perfume || !$this->canBeSold($perfume) || !$this->validateCartInput()){
-            return response()->json(['message' => DefaultConst::INVALID_INPUT ],400);
-        }
-        $productCountInCart = $this->countCartProduct($productId);
-        $array = $this->addProductToArray($perfume->id,$productCountInCart);
-        $this->storeInSession($array);
+        $userId = auth()->user()->id;
+        [   'product_id' => $inputProductId,
+            'product_quantity' => $inputProductQuantity,
+            'product_type' => $inputProductType
+        ] = $request->validated();
+//        info($inputProductId);
+        $product = $this->getProduct($inputProductId,$inputProductType);
+//        info($product);
+        // check for any error in input or reserved product
+        $this->validateStoreCart($product,$inputProductQuantity,$inputProductType);
+        $this->StoreCart($product,$inputProductQuantity,$inputProductType,$userId);
         return response()->json(['message' => DefaultConst::SUCCESSFUL]);
     }
 
@@ -44,99 +63,60 @@ class CartController extends Controller
     /**
      * Remove the specified resource from cart.
      */
-    public function destroy(string $id)
+    public function destroy(DeleteCartRequest $request)
     {
-        if(!Session::has('products') || !is_array(Session::get('products')) || !$this->destroySession($id)){
-            return response()->json(['message' => DefaultConst::INVALID_INPUT]);
-        }
+        //todo changed doc
+        $userId = auth()->user()->id;
+        [   'product_id' => $inputProductId,
+            'product_type' => $inputProductType,
+            'product_quantity' => $inputProductQuantity
+        ] = $request->validated();
+        $this->deleteCart($inputProductId,$inputProductType,$inputProductQuantity,$userId);
         return response()->json(['message' => DefaultConst::SUCCESSFUL]);
-
     }
+
+
     public function destroyAll(){
-        Session::flush();
+        $userId = auth()->user()->id;
+        foreach (DefaultConst::PRODUCT_TYPE as $productType) {
+            Redis::del("cart:product_type=$productType&user_id=$userId");
+        }
         return response()->json(['message' => DefaultConst::SUCCESSFUL]);
     }
 
-
-
-    private function validateCartInput():bool {
-        $products = Session::get('products');
-        if((is_array($products) && count($products) > DefaultConst::MAX_CART_LIMIT)){
-            return false;
-        }
-        return true;
-    }
-    private function canBeSold($perfume):bool{
-        if(!$perfume->is_active || $perfume->quantity == 0){
-            return false;
-        }
-        return true;
-    }
-    private function storeInSession($value , $sessionName = 'products'):void{
-        Session::put($sessionName,$value);
-    }
-
-    private function destroySession($productId):bool {
-        if(!$this->isSessionAvailable($productId)){
-            return false;
-        }
-        $products = Session::pull('products');
-        unset($products[$productId]);
-        Session::put($products);
-        return true;
-    }
-
-    private function isSessionAvailable($productId):bool {
-        try{
-            $products = Session::get('products');
-            if(!is_array($products)){
-                Session::flush();
-                throw new \InvalidArgumentException("expected array for products in shopping cart , changed manually by the user");
-            }
-            if (array_key_exists($productId, $products)) {
-                return true;
-            }
-            return false;
-        }catch (\Exception $e){
-            info('session manipulation error'.$e->getMessage());
-            http_response_code(404);
-            die();
-        }
-    }
-
-    private function countCartProduct(mixed $productId): int {
-        if(!is_array(Session::get('products'))){
-            return 1;
-        }
-        foreach(Session::get('products') as $id => $quantity){
-            if($id == $productId){
-                return (integer)$quantity + 1;
+    private function getProduct($inputProductId, $inputProductType) {
+        foreach(DefaultConst::PRODUCT_TYPE as $productType){
+            if($inputProductType == $productType){
+                return $this->getProductByType($inputProductId,$productType);
             }
         }
-        return 1;
     }
 
-    private function addProductToArray($productId,$count): array {
-        $products = Session::pull('products')??[];
-        try{
-            if(!is_array($products)){
-                // all we are is talking over each other "emily armstrong" :)))
-                Session::flush();
-                throw new \InvalidArgumentException("expected array for products in shopping cart , changed manually by the user");
-            }
-            foreach ($products as $id => $quantity){
-                if($id == $productId){
-                    $products[$id] = $count;
-                    return $products;
-                }
-            }
-            $products[$productId] = $count;
-            return $products;
-        }catch(\Exception $e){
-            info('session manipulation error'.$e->getMessage());
-            http_response_code(404);
-            die('error');
+    private function validateStoreCart($product, $inputProductQuantity , $inputProductType) {
+        $reservedProducts = $this->getReservedProduct($product->id,$inputProductType);
+        // we send error if: product not found or quantity minus reserved is not enough or product is not active
+        if(!$product || ($product->quantity - $reservedProducts) < $inputProductQuantity || !$product->is_active){
+            throw new ErrorException(DefaultConst::INVALID_INPUT);
         }
+
     }
+
+    private function StoreCart($product, $inputProductQuantity,$inputProductType,$userId) {
+        Redis::hincrby("cart:product_type=$inputProductType&user_id=$userId", $product->id, $inputProductQuantity);
+        Redis::expire("cart:product_type=watch&user_id=4", 30 * 60);
+    }
+
+    private function deleteCart($inputProductId, $inputProductType, $inputProductQuantity, $userId) {
+        if(!Redis::exists("cart:product_type=$inputProductType&user_id=$userId") ){
+            return;
+        }
+        $cartQuantity = Redis::hget("cart:product_type=$inputProductType&user_id=$userId", $inputProductId);
+        if($cartQuantity-$inputProductQuantity < 0){
+            Redis::hdel("cart:product_type=$inputProductType&user_id=$userId", $inputProductId);
+            return;
+        }
+        Redis::hincrby("cart:product_type=$inputProductType&user_id=$userId", $inputProductId, -$inputProductQuantity);
+    }
+
 
 }

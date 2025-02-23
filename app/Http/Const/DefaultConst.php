@@ -19,4 +19,6 @@ class DefaultConst {
     const FAILED_CATEGORY_EXISTENCE = 'دسته بندی مورد نظر یافت نشد';
     const INVALID_MIME_TYPE = 'فرمت تصویر مجاز نیست';
     const INVALID_IMAGE = 'تصویر نامعتبر است';
+    const PRODUCT_TYPE = ['perfume','cloth','watch'];
+    const INVALID_PRODUCT_TYPE = 'نوع محصول نامعتبر است';
 }

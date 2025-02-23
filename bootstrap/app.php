@@ -20,12 +20,14 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
             'customWebMiddleware' => \App\Http\Middleware\CustomMiddleware::class,
+            'extendCartTime' => \App\Http\Middleware\ExtendCartTime::class
 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->dontReport([
             InvalidMimeTypeException::class,
+            Exception::class,
         ]);
 
     })->create();

@@ -16,6 +16,8 @@ class PerfumeProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'type' => 'perfume',
+            'id' => $this->resource['id'],
             'name' => $this->resource['name']??NULL,
             'price' => $this->resource['price']??NULL,
             'volume' => $this->resource['volume']??NULL,
