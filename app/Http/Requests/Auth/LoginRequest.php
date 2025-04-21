@@ -10,8 +10,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
 {
@@ -27,14 +27,16 @@ class LoginRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function rules(): array
     {
         $this->ensureIsNotRateLimited();
+
         return [
-            'phone_number' => ['required', 'string','size:11', new PhoneNumberRule()],
-            'phone_verify_code' => ['string','size:5',new VerifyCodeRule],
+            'phone_number' => ['required', 'string', 'size:11', new PhoneNumberRule],
+            'phone_verify_code' => ['string', 'size:5', new VerifyCodeRule],
             'password' => [Password::defaults()],
         ];
     }

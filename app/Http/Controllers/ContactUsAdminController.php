@@ -6,7 +6,6 @@ use App\Http\Const\DefaultConst;
 use App\Http\Resources\AdminContactUsResource;
 use App\Models\ContactUs;
 
-
 class ContactUsAdminController extends Controller
 {
     /**
@@ -14,7 +13,7 @@ class ContactUsAdminController extends Controller
      */
     public function index($status)
     {
-        //TODO use cache
+        // TODO use cache
         return AdminContactUsResource::collection(ContactUs::withTrashed()->paginate(DefaultConst::PAGINATION_NUMBER));
     }
 
@@ -24,6 +23,7 @@ class ContactUsAdminController extends Controller
     public function destroy(ContactUs $contactUs)
     {
         $contactUs->delete();
-        return response()->json(['response' => 'ok'],200);
+
+        return response()->json(['response' => 'ok'], 200);
     }
 }

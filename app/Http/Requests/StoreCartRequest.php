@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\ProductTypeRule;
-use App\Rules\SlugRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCartRequest extends FormRequest
@@ -24,9 +23,9 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => ['required','string'],
-            'product_type' => ['required','string',new ProductTypeRule()],
-            'product_quantity' => ['required','integer','min:1','max:50'],
+            'product_id' => ['required', 'string'],
+            'product_type' => ['required', 'string', new ProductTypeRule],
+            'product_quantity' => ['required', 'integer', 'min:1', 'max:50'],
         ];
     }
 }

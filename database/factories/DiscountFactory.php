@@ -19,8 +19,8 @@ class DiscountFactory extends Factory
     {
         return [
             'perfume_id' => Perfume::factory()->create(),
-            'percent' => fake()->randomFloat(4,0,100),
-            'amount' => fake()->numberBetween(0,99999999),
+            'percent' => fake()->randomFloat(4, 0, 100),
+            'amount' => fake()->numberBetween(0, 99999999),
             'start_date' => fake()->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'),
             'end_date' => fake()->dateTimeBetween('now', '+1 year')->format('Y-m-d H:i:s'),
             'status' => fake()->randomElement(['active', 'inactive', 'expired']),

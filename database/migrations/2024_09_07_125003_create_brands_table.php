@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('logo')->nullable();
             $table->string('link')->nullable();
-            //todo change type to be only one product itself
-            $table->enum('type',['perfume','watch']);
+            // todo change type to be only one product itself
+            $table->enum('type', ['perfume', 'watch']);
             $table->text('description');
             $table->string('title');
             $table->string('slug')->unique();

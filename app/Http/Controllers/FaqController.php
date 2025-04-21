@@ -9,7 +9,7 @@ class FaqController extends Controller
 {
     public function index()
     {
-        //TODO use cache
+        // TODO use cache
         return FaqResource::collection(Faq::all());
     }
 }

@@ -17,7 +17,7 @@ class ContactUsFactory extends Factory
     public function definition(): array
     {
         return [
-            'phone_number' => fake()->numberBetween(1000000000,99999999999),
+            'phone_number' => fake()->numberBetween(1000000000, 99999999999),
             'email' => fake()->email(),
             'description' => fake()->realTextBetween(),
         ];

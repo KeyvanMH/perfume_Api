@@ -14,11 +14,13 @@ class FaqFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     *
      * @throws RandomException
      */
     public function definition(): array
     {
-        $bool = [true,false];
+        $bool = [true, false];
+
         return [
             'question' => fake()->text(20),
             'answer' => fake()->text(30),

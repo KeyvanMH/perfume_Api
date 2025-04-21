@@ -6,8 +6,6 @@ use App\Http\Resources\CategoryFullResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 
-
-
 class CategoryController extends Controller
 {
     /**
@@ -15,10 +13,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //TODO use cache
+        // TODO use cache
         return CategoryResource::collection(Category::all());
     }
-
 
     /**
      * Display the specified resource.
@@ -27,5 +24,4 @@ class CategoryController extends Controller
     {
         return new CategoryFullResource($category);
     }
-
 }

@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class City extends Model
 {
     use HasFactory , SoftDeletes;
+
     protected $guarded = [];
 
-    public function province(){
+    public function province()
+    {
         return $this->belongsTo(Province::class);
     }
-    public function user(){
+
+    public function user()
+    {
         return $this->hasMany(User::class);
     }
 }

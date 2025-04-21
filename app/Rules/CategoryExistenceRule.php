@@ -16,7 +16,7 @@ class CategoryExistenceRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!Category::where('slug', $value)->exists()) {
+        if (! Category::where('slug', $value)->exists()) {
             $fail(DefaultConst::FAILED_CATEGORY_EXISTENCE);
         }
     }

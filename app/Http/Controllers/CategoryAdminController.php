@@ -9,7 +9,6 @@ use App\Http\Resources\CategoryAdminResource;
 use App\Http\Resources\CategoryFullAdminResource;
 use App\Models\Category;
 
-
 class CategoryAdminController extends Controller
 {
     /**
@@ -17,7 +16,7 @@ class CategoryAdminController extends Controller
      */
     public function index()
     {
-        //TODO use cache
+        // TODO use cache
         return CategoryAdminResource::collection(Category::withTrashed()->paginate(DefaultConst::PAGINATION_NUMBER));
     }
 
@@ -30,9 +29,10 @@ class CategoryAdminController extends Controller
             'name' => $request->validated('name'),
             'type' => $request->validated('type'),
             'description' => $request->validated('description'),
-            'slug' => $request->validated('slug')
+            'slug' => $request->validated('slug'),
         ]);
-        return response()->json(['responses' => 'ok'],201);
+
+        return response()->json(['responses' => 'ok'], 201);
     }
 
     /**
@@ -40,14 +40,15 @@ class CategoryAdminController extends Controller
      */
     public function show($slug)
     {
-        $result = Category::withTrashed()->where('slug','=',$slug)->get();
-        return  CategoryFullAdminResource::collection($result);
+        $result = Category::withTrashed()->where('slug', '=', $slug)->get();
+
+        return CategoryFullAdminResource::collection($result);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Category $category , UpdateCategoryRequest $request)
+    public function update(Category $category, UpdateCategoryRequest $request)
     {
         $fieldsToUpdate = ['name', 'type', 'description', 'slug'];
         foreach ($fieldsToUpdate as $field) {
@@ -56,7 +57,8 @@ class CategoryAdminController extends Controller
             }
         }
         $category->save();
-        return response()->json(['responses' => 'ok'],200);
+
+        return response()->json(['responses' => 'ok'], 200);
     }
 
     /**
@@ -65,6 +67,7 @@ class CategoryAdminController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->json(['responses' => 'ok'],200);
+
+        return response()->json(['responses' => 'ok'], 200);
     }
 }

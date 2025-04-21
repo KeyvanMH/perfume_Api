@@ -2,49 +2,54 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ErrorException;
+use App\Http\Actions\Cart\CartAction;
+use App\Http\Const\DefaultConst;
+use App\Http\Services\Shetabit\ShetabitService;
+use App\Models\User;
+use App\Traits\HasUserCompletedInfo;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 
 class BankGatewayRequestController extends Controller
 {
+    use HasUserCompletedInfo;
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CartAction $cartStatus, ShetabitService $shetabitService)
     {
-        //
+        $user = auth()->user();
+        $this->validateUser($user);
+        $usersCartStatus = $cartStatus->handle($user);
+        if (
+            $usersCartStatus['shipping-price'] == null ||
+            $usersCartStatus['shipping-price'] == 0 ||
+            $usersCartStatus['total-price-to-pay'] == 0 ||
+            $usersCartStatus['total-price-to-pay'] == null
+
+        ) {
+            return response()->json(['message' => DefaultConst::FAIL], 500);
+        }
+        $shetabitService->pay($user, $usersCartStatus);
+
+        return response()->json(['bankGateway' => $shetabitService->bankGatewayUrl ?? null]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function verify(Request $request, ShetabitService $shetabitService)
     {
-        //
+        $shetabitService->verify($request->query('Authority'), $request->query('Status') == 'OK');
+
+        return response()->json(['reference id ' => $shetabitService->getReferenceId()]);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    private function validateUser(User|Authenticatable $user)
     {
-        //todo send the bank gateway to the user
-        // validate if the user info is right
-        // maybe send data in body of the request!!!
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        // todo check that user is online and has cart :)
+        if (! $this->hasAddress($user)) {
+            throw new ErrorException('امکان خرید برای کاربر غیر فعال است.');
+        }
     }
 }

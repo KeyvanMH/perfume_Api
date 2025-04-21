@@ -16,10 +16,10 @@ class BrandImageResource extends JsonResource
     {
         return [
             'id' => $this->resource['id'],
-//            'path' => $this->resource['image_path'],
+            //            'path' => $this->resource['image_path'],
             'alt' => $this->resource['alt'],
             'extension' => $this->resource['extension'],
-            'size' => $this->resource['size']
+            'size' => $this->resource['size'],
         ];
     }
 }

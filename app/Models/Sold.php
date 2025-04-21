@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sold extends Model
 {
     use HasFactory , SoftDeletes;
+
     protected $guarded = [];
 
-    public function product() {
-        return $this->morphTo('product','product_type','product_id');
+    public function product()
+    {
+        return $this->morphTo('product', 'product_type', 'product_id');
     }
 }

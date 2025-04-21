@@ -16,7 +16,7 @@ class BrandExistenceRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!Brand::where('slug', $value)->exists()) {
+        if (! Brand::where('slug', $value)->exists()) {
             $fail(DefaultConst::FAILED_BRAND_EXISTENCE);
         }
     }

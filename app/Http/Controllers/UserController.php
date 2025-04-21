@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Action\Filter\UserReport;
 use App\Http\Const\DefaultConst;
 use App\Http\Resources\UserForAdminResource;
+use App\Http\Services\Filter\UserFilterService;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,15 +13,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request,UserReport $userReport)
+    public function index(Request $request, UserFilterService $userFilterService)
     {
-        //todo important doc needed
+        // todo important doc needed
         return UserForAdminResource::collection(
-            $userReport->urlQueryRetriever($request->query())->get(User::query())
+            $userFilterService->urlQueryRetriever($request->query())->get(User::query())
         );
     }
-    public function store(Request $request){
-        return 'store';
+
+    public function store(Request $request)
+    {
+        // TODO admin be able to add custom user
     }
 
     /**
@@ -29,7 +31,7 @@ class UserController extends Controller
      */
     public function show($userId)
     {
-        return new UserForAdminResource(User::withTrashed()->where('id','=',$userId)->firstOrFail());
+        return new UserForAdminResource(User::withTrashed()->where('id', '=', $userId)->firstOrFail());
     }
 
     /**
@@ -37,9 +39,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if(!$user->delete()){
+        if (! $user->delete()) {
             return response()->json(['message' => DefaultConst::FAIL]);
         }
+
         return response()->json(['message' => DefaultConst::SUCCESSFUL]);
     }
 }

@@ -23,12 +23,12 @@ class UpdateCredentialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['string','size:11',new PhoneNumberRule,'nullable'],
-            'first_name' => ['string','max:50','min:3','nullable'],
-            'last_name' => ['string','max:50','min:3','nullable'],
-            'email' => ['email','nullable'],
-            'post_number' => ['string','nullable','max:10','min:3'],
-            'city' => ['string','nullable','max:10','exists:cities,id'],
+            'phone_number' => ['string', 'size:11', new PhoneNumberRule, 'nullable'],
+            'first_name' => ['string', 'max:50', 'min:3', 'nullable'],
+            'last_name' => ['string', 'max:50', 'min:3', 'nullable'],
+            'email' => ['email', 'nullable'],
+            'post_number' => ['string', 'nullable', 'max:10', 'min:3'],
+            'city' => ['string', 'nullable', 'max:10', 'exists:cities,id'],
         ];
     }
 }

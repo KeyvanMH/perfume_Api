@@ -23,10 +23,12 @@ class StorePerfumeImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'images.*' => ['required', 'image', DefaultConst::MIME_TYPE, DefaultConst::IMAGE_MAX_SIZE],//todo unified image in defaultConst in all project
+            'images.*' => ['required', 'image', DefaultConst::MIME_TYPE, DefaultConst::IMAGE_MAX_SIZE], // todo unified image in defaultConst in all project
         ];
     }
-    public function messages() {
+
+    public function messages()
+    {
         return [
             'images.required' => 'عکسی آپلود نشده است',
         ];

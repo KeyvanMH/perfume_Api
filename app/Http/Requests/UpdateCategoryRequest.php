@@ -24,10 +24,10 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string','max:30'],
-            'type' => [new CategoryRule()],
-            'description' => ['string','max:255'],
-            'slug' => ['unique:categories',new SlugRule()],
+            'name' => ['string', 'max:30'],
+            'type' => [new CategoryRule],
+            'description' => ['string', 'max:255'],
+            'slug' => ['unique:categories', new SlugRule],
 
         ];
     }

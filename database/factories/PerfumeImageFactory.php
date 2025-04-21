@@ -17,11 +17,11 @@ class PerfumeImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'perfume_id' => fake()->randomElement([1,2,3,4,5,6,7,8]),
+            'perfume_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7, 8]),
             'image_path' => fake()->filePath(),
             'alt' => fake()->streetName(),
             'extension' => fake()->fileExtension(),
-            'size' => fake()->numberBetween(5000)
+            'size' => fake()->numberBetween(5000),
 
         ];
     }

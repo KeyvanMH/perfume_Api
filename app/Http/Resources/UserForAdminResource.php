@@ -21,10 +21,10 @@ class UserForAdminResource extends JsonResource
             'lastName' => $this->resource['last_name'],
             'email' => $this->resource['email'],
             'postNumber' => $this->resource['post_number'],
-            'isEmailVerified' => $this->resource['email_verified_at']?'فعال':'غیر فعال',
+            'isEmailVerified' => $this->resource['email_verified_at'] ? 'فعال' : 'غیر فعال',
             'role' => $this->resource['role'],
             'createdAt' => $this->resource['created_at'],
-            'isActive' => !$this->resource['deleted_at']?'فعال':'پاک شده',
+            'isActive' => ! $this->resource['deleted_at'] ? 'فعال' : 'پاک شده',
         ];
     }
 }

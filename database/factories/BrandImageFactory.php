@@ -17,11 +17,11 @@ class BrandImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'brand_id' => random_int(1,10),
+            'brand_id' => random_int(1, 10),
             'image_path' => fake()->filePath(),
             'alt' => fake()->text(30),
             'extension' => fake()->mimeType(),
-            'size' => '20000'
+            'size' => '20000',
         ];
     }
 }

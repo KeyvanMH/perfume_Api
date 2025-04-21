@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Perfume::class)->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-//            $table->string('name');
+            //            $table->string('name');
             $table->string('image_path');
             $table->string('alt')->nullable();
             $table->string('extension');

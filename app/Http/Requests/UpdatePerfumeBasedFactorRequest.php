@@ -24,13 +24,15 @@ class UpdatePerfumeBasedFactorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'stock' => ['string','max:255',new NumberRule()],
+            'stock' => ['string', 'max:255', new NumberRule],
             'is_active' => ['in:true,false'],
         ];
     }
-    public function messages() {
+
+    public function messages()
+    {
         return [
-            'is_active.in' => DefaultConst::INVALID_INPUT
+            'is_active.in' => DefaultConst::INVALID_INPUT,
         ];
     }
 }

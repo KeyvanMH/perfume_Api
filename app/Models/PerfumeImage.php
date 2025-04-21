@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PerfumeImage extends Model
 {
     use HasFactory , SoftDeletes;
+
     protected $guarded = [];
 
-    public function perfume() {
+    public function perfume()
+    {
         return $this->belongsTo(Perfume::class);
     }
 }

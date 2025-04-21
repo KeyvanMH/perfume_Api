@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\PerfumeSold;
 use App\Models\Sold;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class SoldSeeder extends Seeder

@@ -28,17 +28,16 @@ class StoreBrandRequest extends FormRequest
             'link' => ['string'],
             'description' => ['required', 'string'],
             'title' => ['required', 'string'],
-            'images.*' => [ 'max:5000','image', 'mimes:webp,jpeg,jpg,png'],
+            'images.*' => ['max:5000', 'image', 'mimes:webp,jpeg,jpg,png'],
         ];
     }
 
     public function messages()
     {
         return [
-            'images.*.image' => ' فرمت عکس پشتیبانی نمی شود!' ,
-            'images.*.uploaded' => ' حجم فایل بیشتر از حد مجاز می باشد' ,
-            'logo.uploaded' => ' حجم فایل بیشتر از حد مجاز است!' ,
+            'images.*.image' => ' فرمت عکس پشتیبانی نمی شود!',
+            'images.*.uploaded' => ' حجم فایل بیشتر از حد مجاز می باشد',
+            'logo.uploaded' => ' حجم فایل بیشتر از حد مجاز است!',
         ];
     }
-
 }

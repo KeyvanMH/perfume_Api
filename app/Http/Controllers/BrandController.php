@@ -14,11 +14,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        //TODO use cache
+        // TODO use cache
         return BrandResource::collection(Brand::with('images')->paginate(DefaultConst::PAGINATION_NUMBER));
     }
-
-
 
     /**
      * Display the specified resource.
@@ -27,5 +25,4 @@ class BrandController extends Controller
     {
         return new BrandFullResource($brand->load('images'));
     }
-
 }

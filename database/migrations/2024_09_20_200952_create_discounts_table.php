@@ -21,7 +21,7 @@ return new class extends Migration
                 ->onUpdate('cascade');
             $table->string('description')->nullable();
             $table->string('name');
-            $table->decimal('percent',4,2);
+            $table->decimal('percent', 4, 2);
             $table->timestamp('start_date')->default(now());
             $table->timestamp('end_date');
             $table->boolean('is_active')->default(1);
@@ -37,5 +37,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('discounts');
     }
-
 };

@@ -21,13 +21,13 @@ return new class extends Migration
             $table->foreignIdFor(Perfume::class)->constrained();
             $table->string('name');
             $table->integer('volume');
-            $table->decimal('price',8,0);
+            $table->decimal('price', 8, 0);
             $table->integer('stock')->default(0);
             $table->integer('sold')->default(0);
-            //TODO if the sold is equal to quantity , we make is_active false or when seller wants to stop selling it
+            // TODO if the sold is equal to quantity , we make is_active false or when seller wants to stop selling it
             $table->boolean('is_active')->default(true);
             $table->string('warranty')->nullable();
-            $table->enum('gender',['male','female','sport']);
+            $table->enum('gender', ['male', 'female', 'sport']);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -18,7 +18,7 @@ class FactorFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->randomElement([rand(1,3),User::factory()->create()]),
+            'user_id' => fake()->randomElement([rand(1, 3), User::factory()->create()]),
         ];
     }
 }

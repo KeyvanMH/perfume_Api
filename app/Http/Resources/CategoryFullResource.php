@@ -17,7 +17,7 @@ class CategoryFullResource extends JsonResource
         return [
             'name' => $this->resource['name'],
             'type' => $this->resource['type'],
-            'description' =>  $this->resource['description'],
+            'description' => $this->resource['description'],
             'slug' => $this->resource['slug'],
         ];
     }

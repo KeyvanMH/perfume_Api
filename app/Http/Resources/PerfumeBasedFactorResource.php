@@ -21,11 +21,11 @@ class PerfumeBasedFactorResource extends JsonResource
             'price' => $this->resource['price'],
             'stock' => $this->resource['stock'],
             'sold' => $this->resource['sold'],
-            'isActive' => $this->resource['is_active']?'در صف فروش':'فروش متوقف شده است',
+            'isActive' => $this->resource['is_active'] ? 'در صف فروش' : 'فروش متوقف شده است',
             'warranty' => $this->resource['warranty'],
             'gender' => $this->resource['gender'],
-            'deleted' => $this->resource['deleted_at']?'پاک شده است':'فعال',
-            'updatedAt' => $this->resource['updated_at']
+            'deleted' => $this->resource['deleted_at'] ? 'پاک شده است' : 'فعال',
+            'updatedAt' => $this->resource['updated_at'],
         ];
     }
 }

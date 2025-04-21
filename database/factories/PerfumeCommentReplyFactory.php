@@ -17,8 +17,8 @@ class PerfumeCommentReplyFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->randomElement([1,2,3,4,5,6,7,8,9]),
-            'perfume_comment_id' => fake()->randomElement([1,2,3,4,5,6,7,8,9]),
+            'user_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+            'perfume_comment_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7, 8, 9]),
             'reply' => fake()->text(50),
 
         ];

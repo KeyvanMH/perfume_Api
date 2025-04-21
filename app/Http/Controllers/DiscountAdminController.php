@@ -6,7 +6,6 @@ use App\Http\Const\DefaultConst;
 use App\Http\Resources\DiscountAdminResource;
 use App\Models\Discount;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class DiscountAdminController extends Controller
 {
@@ -15,7 +14,8 @@ class DiscountAdminController extends Controller
      */
     public function index()
     {
-        $discount =  Discount::withTrashed()->orderBy('status')->paginate(DefaultConst::PAGINATION_NUMBER);
+        $discount = Discount::withTrashed()->orderBy('status')->paginate(DefaultConst::PAGINATION_NUMBER);
+
         return DiscountAdminResource::collection($discount);
     }
 
@@ -34,7 +34,6 @@ class DiscountAdminController extends Controller
     {
         return 'show';
     }
-
 
     /**
      * Update the specified resource in storage.

@@ -9,35 +9,46 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Perfume extends Model
 {
     use HasFactory , SoftDeletes;
+
     protected $guarded = [];
 
-    public function brand() {
-    return $this->belongsTo(Brand::class);
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany(PerfumeComment::class);
     }
 
-    public function images() {
+    public function images()
+    {
         return $this->hasMany(PerfumeImage::class);
     }
 
-    public function discount() {
+    public function discount()
+    {
         return $this->hasMany(Discount::class);
     }
 
-    public function category() {
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function perfumeBasedFactor() {
+
+    public function perfumeBasedFactor()
+    {
         return $this->hasMany(PerfumeBasedFactor::class);
     }
-    public function sold() {
-        return $this->morphMany(Sold::class,'product');
+
+    public function sold()
+    {
+        return $this->morphMany(Sold::class, 'product');
     }
 }

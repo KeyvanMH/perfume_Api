@@ -15,8 +15,8 @@ class ProductTypeRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!in_array($value, DefaultConst::PRODUCT_TYPE)) {
-            $fail($attribute . ' نامعتبر است');
+        if (! in_array($value, DefaultConst::PRODUCT_TYPE)) {
+            $fail($attribute.' نامعتبر است');
         }
     }
 }

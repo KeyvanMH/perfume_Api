@@ -23,9 +23,9 @@ class ContactUsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['string','size:11',new PhoneNumberRule()],
-            'description' => ['string','max:500'],
-            'email' => ['nullable', 'email']
+            'phone_number' => ['string', 'size:11', new PhoneNumberRule],
+            'description' => ['string', 'max:500'],
+            'email' => ['nullable', 'email'],
         ];
     }
 }

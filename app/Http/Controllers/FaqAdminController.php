@@ -7,8 +7,6 @@ use App\Http\Requests\FaqRequest;
 use App\Http\Resources\AdminFaqResource;
 use App\Models\Faq;
 
-
-
 class FaqAdminController extends Controller
 {
     /**
@@ -16,7 +14,7 @@ class FaqAdminController extends Controller
      */
     public function index()
     {
-        //TODO use cache
+        // TODO use cache
         return AdminFaqResource::collection(Faq::withTrashed()->paginate(DefaultConst::PAGINATION_NUMBER));
     }
 
@@ -29,6 +27,7 @@ class FaqAdminController extends Controller
             'question' => $request->input('question'),
             'answer' => $request->input('answer'),
         ]);
+
         return AdminFaqResource::collection(collect([$user]));
     }
 
@@ -41,7 +40,8 @@ class FaqAdminController extends Controller
         $faq->answer = $request->input('question');
         $faq->save();
         $faq->fill($request->only(['question', 'answer', 'is_active']))->save();
-        return response()->json(['response' => 'ok'],200);
+
+        return response()->json(['response' => 'ok'], 200);
     }
 
     /**
@@ -50,6 +50,7 @@ class FaqAdminController extends Controller
     public function destroy(Faq $faq)
     {
         $faq->delete();
-        return response()->json(['response' => 'ok'],200);
+
+        return response()->json(['response' => 'ok'], 200);
     }
 }

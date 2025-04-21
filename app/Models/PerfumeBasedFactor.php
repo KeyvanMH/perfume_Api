@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PerfumeBasedFactor extends Model
 {
     use HasFactory,SoftDeletes;
+
     protected $guarded = [];
-    public function factor() {
+
+    public function factor()
+    {
         return $this->belongsTo(Factor::class);
     }
 
-    public function perfume() {
+    public function perfume()
+    {
         return $this->belongsTo(Perfume::class);
     }
 }

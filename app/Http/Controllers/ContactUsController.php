@@ -7,8 +7,6 @@ use App\Models\ContactUs;
 
 class ContactUsController extends Controller
 {
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -16,11 +14,10 @@ class ContactUsController extends Controller
     {
         ContactUs::Create([
             'phone_number' => $request->input('phone_number'),
-            'email' => $request->input('email')??NULL,
-            'description' => $request->input('description')
+            'email' => $request->input('email') ?? null,
+            'description' => $request->input('description'),
         ]);
+
         return response()->json(['response' => 'ok']);
     }
-
-
 }

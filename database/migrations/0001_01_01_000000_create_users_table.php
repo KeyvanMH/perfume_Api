@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            //todo make phone_number string to have the first 0 in the phone number
+            // todo make phone_number string to have the first 0 in the phone number
             $table->foreignIdFor(City::class)
                 ->nullable()
                 ->constrained()
                 ->onUpdate('cascade')
-                //todo make it null if city deleted
+                // todo make it null if city deleted
                 ->onDelete('cascade');
             $table->bigInteger('phone_number')->unique();
-            //TODO these 2 rows must be in redis in seperate table
-            //todo index users
-//            $table->integer('sms_verify_code')->default(11111);
-//            $table->timestamp('sms_requested_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            // TODO these 2 rows must be in redis in seperate table
+            // todo index users
+            //            $table->integer('sms_verify_code')->default(11111);
+            //            $table->timestamp('sms_requested_at')->default(DB::raw('CURRENT_TIMESTAMP'));
 
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -34,8 +34,8 @@ return new class extends Migration
             $table->bigInteger('post_number')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->enum('role', ['super_admin', 'blog_admin', 'product_admin','user'])->default('user');
-//            $table->string('address')->nullable();
+            $table->enum('role', ['super_admin', 'blog_admin', 'product_admin', 'user'])->default('user');
+            //            $table->string('address')->nullable();
             $table->rememberToken()->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -9,8 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BrandImage extends Model
 {
     use HasFactory , SoftDeletes;
+
     protected $guarded = [];
-    public function brand() {
+
+    public function brand()
+    {
         return $this->belongsTo(Brand::class);
     }
 }

@@ -17,13 +17,14 @@ class AdminContactUsResource extends JsonResource
         $data = [
             'phoneNumber' => $this->resource['phone_number'],
             'description' => $this->resource['description'],
-            'is_active' => !$this->resource['deleted_at'] ? 'فعال':'غیر فعال',
+            'is_active' => ! $this->resource['deleted_at'] ? 'فعال' : 'غیر فعال',
 
         ];
         // Only add email if it's not null
         if ($this->resource['email'] !== null) {
             $data['email'] = $this->resource['email'];
         }
+
         return $data;
     }
 }

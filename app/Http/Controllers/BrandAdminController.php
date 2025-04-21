@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Const\DefaultConst;
-use App\Http\Requests\destroyBrandImageRequest;
-use App\Http\Requests\StoreBrandImageRequest;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandAdminResource;
 use App\Http\Resources\BrandFullAdminResource;
 use App\Models\Brand;
-use App\Models\BrandImage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,11 +30,11 @@ class BrandAdminController extends Controller
             $logoPath = $request->hasFile('logo') ? $request->file('logo')->store('/public/logo') : null;
 
             $brand = Brand::create([
-                'name' => $request->validated('name')??'',
+                'name' => $request->validated('name') ?? '',
                 'description' => $request->validated('description'),
                 'title' => $request->validated('title'),
                 'slug' => $request->validated('slug'),
-                'logo' => $logoPath??null,
+                'logo' => $logoPath ?? null,
                 'link' => $request->validated('link') ?? null,
             ]);
 
@@ -60,7 +57,8 @@ class BrandAdminController extends Controller
             }
 
         });
-            return response()->json(['response' => 'ok'], 201);
+
+        return response()->json(['response' => 'ok'], 201);
     }
 
     /**
@@ -69,18 +67,18 @@ class BrandAdminController extends Controller
     public function show($slug)
     {
         // we wont use route model binding because we cant have deleted model with route model binding
-        $result = Brand::withTrashed()->where('slug','=',$slug)->with('image')->get();
+        $result = Brand::withTrashed()->where('slug', '=', $slug)->with('image')->get();
+
         return BrandFullAdminResource::collection($result);
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        if($request->validated('logo')){
-            if(Storage::exists('public/'.$brand->logo_path)){
+        if ($request->validated('logo')) {
+            if (Storage::exists('public/'.$brand->logo_path)) {
                 Storage::delete('public/'.$brand->logo_path);
             }
             $logoPath = $request->hasFile('logo') ? $request->file('logo')->store('public/logo') : null;
@@ -94,18 +92,18 @@ class BrandAdminController extends Controller
             }
         }
         $brand->save();
+
         return response()->json(['response' => 'ok'], 200);
     }
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Brand $brand)
     {
-        //observer on Brand model for deleting related images
+        // observer on Brand model for deleting related images
         $brand->delete();
-        return response()->json(['response' => 'ok'],200);
-    }
 
+        return response()->json(['response' => 'ok'], 200);
+    }
 }

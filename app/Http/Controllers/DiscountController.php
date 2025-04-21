@@ -19,10 +19,7 @@ class DiscountController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDiscountRequest $request)
-    {
-
-    }
+    public function store(StoreDiscountRequest $request) {}
 
     /**
      * Display the specified resource.

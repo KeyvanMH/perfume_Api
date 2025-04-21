@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\Perfume;
-use App\Models\User;
+use App\Models\SoldFactor;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,14 +15,10 @@ return new class extends Migration
         Schema::create('solds', function (Blueprint $table) {
             $table->id();
             $table->morphs('product');
-            $table->foreignIdFor(User::class)->nullable()->constrained()
-                ->onDelete('set null');
-            $table->integer('number');
-            $table->integer('price');
-            $table->integer('price_with_discount');
-            $table->integer('final_price');
-            $table->integer('delivery_price');
-            $table->boolean('is_delivered')->default(false);
+            $table->foreignIdFor(SoldFactor::class)->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->unsignedInteger('quantity');
             $table->softDeletes();
             $table->timestamps();
         });

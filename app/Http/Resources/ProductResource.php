@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Action\Discount\CalculateDiscount;
+use App\Http\Actions\Discount\CalculateDiscount;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,33 +15,32 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //todo add other attribute of other type of products
+        // todo add other attribute of other type of products
         return [
             'id' => $this->resource['id'],
             'type' => $this->resource['type'],
-            'name' => $this->resource['name']??NULL,
-            'price' => $this->resource['price']??NULL,
-            'quantity' => $this->resource['is_active']?$this->resource['quantity']:0,
+            'name' => $this->resource['name'] ?? null,
+            'price' => $this->resource['price'] ?? null,
+            'quantity' => $this->resource['is_active'] ? $this->resource['quantity'] : 0,
 
-            //for perfumes
-            'volume' => $this->resource['volume']??NULL,
-            'warranty' => $this->resource['warranty']??NULL,
-            'description' => $this->resource['description']??NULL,
-            'gender' => $this->resource['gender']??NULL,
-            //for clothes
+            // for perfumes
+            'volume' => $this->resource['volume'] ?? null,
+            'warranty' => $this->resource['warranty'] ?? null,
+            'description' => $this->resource['description'] ?? null,
+            'gender' => $this->resource['gender'] ?? null,
+            // for clothes
 
-            //for watches
+            // for watches
 
-            //for cosmetic
-
+            // for cosmetic
 
             'percent' => $this->resource['discount_percent'],
-            'priceWithDiscount' => CalculateDiscount::show($this->resource['price'],$this->resource['discount_percent']),
-            'amount' => $this->resource['amount']??NULL,
-            'discountEndTime' => $this->resource['end_date']??NULL,
-            'slug' => $this->resource['slug']??NULL,
-            'category' => $this->resource['category']['name']??NULL,
-            'brand' => $this->resource['brand']['name']??NULL,
+            'priceWithDiscount' => CalculateDiscount::show($this->resource['price'], $this->resource['discount_percent']),
+            'amount' => $this->resource['amount'] ?? null,
+            'discountEndTime' => $this->resource['end_date'] ?? null,
+            'slug' => $this->resource['slug'] ?? null,
+            'category' => $this->resource['category']['name'] ?? null,
+            'brand' => $this->resource['brand']['name'] ?? null,
         ];
     }
 }

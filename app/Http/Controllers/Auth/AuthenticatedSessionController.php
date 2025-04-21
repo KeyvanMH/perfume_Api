@@ -11,14 +11,19 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+
 /**
  * @OA\Post(
  *       path="/api/login",
  *       summary="میتوانید با کد ارسالی یا پسورد لاگین و رجیستر کنید",
+ *
  *      @OA\RequestBody(
+ *
  *           @OA\MediaType(
  *               mediaType="application/json",
+ *
  *               @OA\Schema(
+ *
  *                   @OA\Property(
  *                       property="phone_number",
  *                       type="string",
@@ -34,6 +39,7 @@ use Illuminate\Support\Facades\Auth;
  *               )
  *           )
  *       ),
+ *
  *       @OA\Response(
  *            response=201,
  *            description="OK"
@@ -45,31 +51,29 @@ use Illuminate\Support\Facades\Auth;
  *        )
  *   )
  **/
-
-class   AuthenticatedSessionController extends Controller
+class AuthenticatedSessionController extends Controller
 {
     /**
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request)
     {
-        //if he is already authenticated
+        // if he is already authenticated
         $validatedData = $request->validated();
 
         $phoneNumber = $validatedData['phone_number'];
         $phoneVerifyCode = $validatedData['phone_verify_code'] ?? null;
         $password = $validatedData['password'] ?? null;
 
-
         // Check for invalid input
-        if (!$phoneVerifyCode and !$password) {
-            return response()->json(['response' =>DefaultConst::INVALID_INPUT], 404);
+        if (! $phoneVerifyCode and ! $password) {
+            return response()->json(['response' => DefaultConst::INVALID_INPUT], 404);
         }
 
         // Validate the password if provided
         if ($password) {
-            if (!Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password])) {
-                return response()->json(['response' =>DefaultConst::INVALID_INPUT]);
+            if (! Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password])) {
+                return response()->json(['response' => DefaultConst::INVALID_INPUT]);
             }
         } elseif ($phoneVerifyCode) {
             // Get the latest SMS verification for the phone number
@@ -83,8 +87,8 @@ class   AuthenticatedSessionController extends Controller
 
         // If the user is not registered, create a new user
         $user = User::firstOrCreate(['phone_number' => $phoneNumber]);
-//        $token = $user->createToken('accessToken',expiresAt: Carbon::now()->addHours(12));
-        $token = $user->createToken('accessToken',expiresAt: null);
+        //        $token = $user->createToken('accessToken',expiresAt: Carbon::now()->addHours(12));
+        $token = $user->createToken('accessToken', expiresAt: null);
 
         return response()->json(['token' => $token->plainTextToken]);
 

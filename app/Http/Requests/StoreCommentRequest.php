@@ -22,12 +22,14 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment' => ['required','string','max:255','min:1']
+            'comment' => ['required', 'string', 'max:255', 'min:1'],
         ];
     }
-    public function messages() {
+
+    public function messages()
+    {
         return [
-            'comment.required' => 'ورودی برای کامنت وارد کنید.'
+            'comment.required' => 'ورودی برای کامنت وارد کنید.',
         ];
     }
 }

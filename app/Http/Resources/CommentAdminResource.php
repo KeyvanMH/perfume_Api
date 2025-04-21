@@ -17,9 +17,9 @@ class CommentAdminResource extends JsonResource
         return [
             'id' => $this->resource['id'],
             'comment' => $this->resource['comment'],
-            'user' => $this->when(isset($this->resource['user']),new UserForAdminResource($this->resource['user']),null),
-            'replies' => $this->when(isset($this->resource['replies']),new CommentReplyAdminResource($this->resource['replies']),null),
-            'isActive' => $this->resource['deleted_at']?'پاک شده':'فعال',
+            'user' => $this->when(isset($this->resource['user']), new UserForAdminResource($this->resource['user']), null),
+            'replies' => $this->when(isset($this->resource['replies']), new CommentReplyAdminResource($this->resource['replies']), null),
+            'isActive' => $this->resource['deleted_at'] ? 'پاک شده' : 'فعال',
         ];
     }
 }

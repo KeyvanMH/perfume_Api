@@ -18,7 +18,7 @@ class CategoryAdminResource extends JsonResource
             'name' => $this->resource['name'],
             'type' => $this->resource['type'],
             'slug' => $this->resource['slug'],
-            'isActive' => empty($this->resource['deleted_at'])?'فعال':'غیر فعال',
+            'isActive' => empty($this->resource['deleted_at']) ? 'فعال' : 'غیر فعال',
         ];
     }
 }

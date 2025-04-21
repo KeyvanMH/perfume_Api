@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\PerfumeBasedFactor;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,13 +22,13 @@ class PerfumeOfPerfumeBasedFactor extends JsonResource
             'quantity' => $this->resource['quantity'],
             'warranty' => $this->resource['warranty'],
             'gender' => $this->resource['gender'],
-            'isActive' => $this->resource['is_active']?'فعال':'غیر فعال',
+            'isActive' => $this->resource['is_active'] ? 'فعال' : 'غیر فعال',
             'sold' => $this->resource['sold'],
             'createdAt' => $this->resource['created_at'],
             'discountPercent' => $this->resource['discount_percent'],
             'discountEndTime' => $this->resource['discount_end_date'],
             'discountCard' => $this->resource['discount_card'],
-            'perfumeBasedFactor' => $this->resource['perfumeBasedFactor']?PerfumeBasedFactorResource::collection($this->resource['perfumeBasedFactor']):[NULL]
+            'perfumeBasedFactor' => $this->resource['perfumeBasedFactor'] ? PerfumeBasedFactorResource::collection($this->resource['perfumeBasedFactor']) : [null],
         ];
     }
 }

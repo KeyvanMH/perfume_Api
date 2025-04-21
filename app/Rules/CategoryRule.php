@@ -14,7 +14,7 @@ class CategoryRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if($value != 'watch' and $value != 'perfume'){
+        if ($value != 'watch' and $value != 'perfume') {
             $fail('نوع محصول پشتیبانی نمی شود');
         }
     }

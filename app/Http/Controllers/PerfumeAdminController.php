@@ -2,41 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Action\Filter\PerfumeFilter;
-use App\Http\Action\Filter\UserProductQuery;
 use App\Http\Const\DefaultConst;
-use App\Http\Middleware\ProductAdminMiddleware;
 use App\Http\Requests\StorePerfumeRequest;
 use App\Http\Requests\UpdatePerfumeRequest;
 use App\Http\Resources\PerfumeOfPerfumeBasedFactor;
 use App\Http\Resources\PerfumeProductAdminResource;
 use App\Http\Resources\PerfumeSearchAdminResource;
+use App\Http\Services\Filter\PerfumeFilterService;
 use App\Models\Perfume;
+use App\Traits\ReserveProductManagement;
 use Illuminate\Http\Request;
-
 
 class PerfumeAdminController extends Controller
 {
+    use ReserveProductManagement;
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, PerfumeFilter $filter)
+    public function index(Request $request, PerfumeFilterService $filter)
     {
-        //TODO calculate the discount
         $query = Perfume::query();
-        $result = $filter->queryRetriever($request->query())->sanitize()->arrayBuilder()->queryBuilder($query->withTrashed());
-        if (is_array($result)){
+        $result = $filter->queryRetriever($request->query())->sanitize()->eloquentQueryBuilder()->get($query->withTrashed());
+        if (is_array($result)) {
             return response()->json(['message' => DefaultConst::INVALID_INPUT]);
         }
+
         return PerfumeSearchAdminResource::collection($result->appends($request->query()));
     }
-
 
     /**
      * Display a listing of the FactorPerfumes created the selling perfume.
      */
-    public function indexBasedFactor($slug){
-        $perfume =  Perfume::withTrashed()->where('slug','=',$slug)->with('perfumeBasedFactor')->paginate(DefaultConst::PAGINATION_NUMBER);
+    public function indexBasedFactor($slug)
+    {
+        $perfume = Perfume::withTrashed()->where('slug', '=', $slug)->with('perfumeBasedFactor')->paginate(DefaultConst::PAGINATION_NUMBER);
+
         return PerfumeOfPerfumeBasedFactor::collection($perfume);
     }
 
@@ -45,7 +46,7 @@ class PerfumeAdminController extends Controller
      */
     public function store(StorePerfumeRequest $request)
     {
-        //todo we shouldnt be able to add product without factor
+        // todo we shouldnt be able to add product without factor
         $perfume = Perfume::create([
             'name' => $request->validated('name'),
             'price' => $request->validated('price'),
@@ -61,7 +62,8 @@ class PerfumeAdminController extends Controller
             'end_date' => $request->validated('end_date'),
             'discount_card' => $request->validated('discount_card'),
         ]);
-        return response()->json(['response' => 'ok'],201);
+
+        return response()->json(['response' => 'ok'], 201);
     }
 
     /**
@@ -69,20 +71,21 @@ class PerfumeAdminController extends Controller
      */
     public function show($slug)
     {
-        $result = Perfume::withTrashed()->where('slug','=',$slug)->get();
-        return  PerfumeProductAdminResource::collection($result);
-    }
+        $perfume = Perfume::withTrashed()->where('slug', '=', $slug)->get();
+        $perfume->reserved = $perfume->quantity - $this->getReservedProduct($perfume->id, 'perfume');
 
+        return PerfumeProductAdminResource::collection($perfume);
+    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdatePerfumeRequest $request, Perfume $perfume)
     {
-        //TODO change category and brand
+        // TODO change category and brand
         return $perfume->updateOrFail($request->validated());
-        //TODO change to resposne after checking if it works
-//        return response()->json(['response' => 'ok']);
+        // TODO change to resposne after checking if it works
+        //        return response()->json(['response' => 'ok']);
     }
 
     /**
@@ -90,8 +93,9 @@ class PerfumeAdminController extends Controller
      */
     public function destroy(Perfume $perfume)
     {
-        //TODO check if is it possible to delete data because of the sold table restrict
+        // TODO check if is it possible to delete data because of the sold table restrict
         $perfume->delete();
+
         return response()->json(['response' => 'ok']);
     }
 }

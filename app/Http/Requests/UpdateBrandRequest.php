@@ -24,13 +24,15 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'logo' => ['image', 'mimes:png,jpg,jpeg', 'max:5000'],
-            'slug' => [new SlugRule ,'unique:brands'],
+            'slug' => [new SlugRule, 'unique:brands'],
             'link' => ['string'],
             'description' => ['string'],
             'title' => ['string'],
         ];
     }
-    public function messages() {
+
+    public function messages()
+    {
         return [
             'images.*.mime' => ' فرمت عکس پشتیبانی نمی شود!',
             'images.*.uploaded' => ' حجم فایل بیشتر از حد مجاز است!',

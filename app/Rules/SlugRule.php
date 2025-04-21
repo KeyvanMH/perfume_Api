@@ -14,9 +14,9 @@ class SlugRule implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //trim and delete whitespace
+        // trim and delete whitespace
         $hasWhitespace = preg_match('/\s/', $value);
-        if($hasWhitespace){
+        if ($hasWhitespace) {
             $fail('اسلاگ نامعتبر');
         }
     }

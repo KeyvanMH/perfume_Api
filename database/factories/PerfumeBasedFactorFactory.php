@@ -18,18 +18,19 @@ class PerfumeBasedFactorFactory extends Factory
      */
     public function definition(): array
     {
-        $stock = rand(100,500);
+        $stock = rand(100, 500);
+
         return [
-            'factor_id' => fake()->randomElement([rand(100000,100003),Factor::factory()->create()]),
-            'perfume_id' => fake()->randomElement([Perfume::factory()->create(),rand(1,10)]),
+            'factor_id' => fake()->randomElement([rand(100000, 100003), Factor::factory()->create()]),
+            'perfume_id' => fake()->randomElement([Perfume::factory()->create(), rand(1, 10)]),
             'name' => fake()->text(40),
-            'volume' => rand(20,100),
-            'price' => rand(1000000,4000000),
+            'volume' => rand(20, 100),
+            'price' => rand(1000000, 4000000),
             'stock' => $stock,
-            'sold' => $stock - rand(0,$stock),
-            'is_active' => fake()->randomElement([true,true,true,false,true]),
-            'warranty'  => fake()->text(40),
-            'gender' => fake()->randomElement(['male','female','sport'])
+            'sold' => $stock - rand(0, $stock),
+            'is_active' => fake()->randomElement([true, true, true, false, true]),
+            'warranty' => fake()->text(40),
+            'gender' => fake()->randomElement(['male', 'female', 'sport']),
         ];
     }
 }

@@ -23,20 +23,20 @@ class StorePerfumeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required','string','max:255'],
-            'price' => ['required','numeric','regex:/^\d{1,8}$/'],
-            'volume' => ['required','integer','max:500'],
-            'slug' => ['required','string',new SlugRule(),'unique:perfumes'],
+            'name' => ['required', 'string', 'max:255'],
+            'price' => ['required', 'numeric', 'regex:/^\d{1,8}$/'],
+            'volume' => ['required', 'integer', 'max:500'],
+            'slug' => ['required', 'string', new SlugRule, 'unique:perfumes'],
             'warranty' => ['string'],
-            'description' => ['string','max:400'],
-            'gender' => ['required','in:male,female,sport'],
-            'percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
-            'amount' => ['nullable','numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/',],
-            'start_date' => ['nullable','date_format:Y-m-d H:i:s',],
-            'end_date' => ['nullable','date_format:Y-m-d H:i:s',],
-            'discount_card' => ['nullable', 'string','max:255',],
-            'discount_card_percent' => ['nullable','numeric','regex:/^\d{1,4}(\.\d{1,2})?$/',],
-            ];
+            'description' => ['string', 'max:400'],
+            'gender' => ['required', 'in:male,female,sport'],
+            'percent' => ['nullable', 'numeric', 'regex:/^\d{1,4}(\.\d{1,2})?$/'],
+            'amount' => ['nullable', 'numeric', 'regex:/^\d{1,11}(\.\d{1,2})?$/'],
+            'start_date' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'end_date' => ['nullable', 'date_format:Y-m-d H:i:s'],
+            'discount_card' => ['nullable', 'string', 'max:255'],
+            'discount_card_percent' => ['nullable', 'numeric', 'regex:/^\d{1,4}(\.\d{1,2})?$/'],
+        ];
     }
 
     public function messages()

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            //todo change type to be only one product itself
-            $table->enum('type',['perfume','watch']);
+            // todo change type to be only one product itself
+            $table->enum('type', ['perfume', 'watch']);
             $table->string('description')->nullable();
             $table->string('slug');
             $table->softDeletes();

@@ -22,7 +22,7 @@ class StoreApplyDiscountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'discount_card_name' => ['required','string','size:7']
+            'discount_card_name' => ['required', 'string', 'size:7'],
         ];
     }
 }

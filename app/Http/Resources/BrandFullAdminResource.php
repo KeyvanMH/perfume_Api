@@ -21,7 +21,7 @@ class BrandFullAdminResource extends JsonResource
             'description' => $this->resource['description'],
             'title' => $this->resource['title'],
             'slug' => $this->resource['slug'],
-            'status' => !$this->resource['deleted_at']?'فعال':' حذف شده',
+            'status' => ! $this->resource['deleted_at'] ? 'فعال' : ' حذف شده',
             'images' => BrandImageResource::collection($this->resource['image']),
         ];
     }

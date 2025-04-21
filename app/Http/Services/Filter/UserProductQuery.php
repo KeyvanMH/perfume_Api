@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Action\Filter;
+namespace App\Http\Services\Filter;
 
-use App\Http\Const\DefaultConst;
-use App\Models\Perfume;
-
-interface UserProductQuery {
-
+interface UserProductQuery
+{
     public function queryRetriever($query);
+
     public function sanitize();
+
     public function eloquentQueryBuilder();
+
     public function get($query);
 }

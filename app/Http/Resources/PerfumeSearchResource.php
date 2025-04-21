@@ -17,18 +17,18 @@ class PerfumeSearchResource extends JsonResource
     {
         return [
             'id' => $this->resource['id'],
-            'name' => $this->resource['name']??NULL,
-            'price' => $this->resource['price']??NULL,
-            'priceWithDiscount' => CalculateDiscount::show($this->resource['price'],$this->resource['discount_percent']),
-            'volume' => $this->resource['volume']??NULL,
-            'quantity' => $this->resource['is_active']?$this->resource['quantity']-$this->resource['reserve']:0,
-            'warranty' => $this->resource['warranty']??NULL,
-            'gender' => $this->resource['gender']??NULL,
-            'discount_percent' => $this->resource['discount_percent']??NULL,
-            'slug' => $this->resource['slug']??NULL,
-            'category' => $this->resource['category']['name']??NULL,
-            'brand' => $this->resource['brand']['name']??NULL,
-//            'images' => $this->when(isset($this->resource['images']),ProductImageResource::collection($this->resource['images']))
+            'name' => $this->resource['name'] ?? null,
+            'price' => $this->resource['price'] ?? null,
+            'priceWithDiscount' => CalculateDiscount::show($this->resource['price'], $this->resource['discount_percent']),
+            'volume' => $this->resource['volume'] ?? null,
+            'quantity' => $this->resource['is_active'] ? $this->resource['quantity'] - $this->resource['reserve'] : 0,
+            'warranty' => $this->resource['warranty'] ?? null,
+            'gender' => $this->resource['gender'] ?? null,
+            'discount_percent' => $this->resource['discount_percent'] ?? null,
+            'slug' => $this->resource['slug'] ?? null,
+            'category' => $this->resource['category']['name'] ?? null,
+            'brand' => $this->resource['brand']['name'] ?? null,
+            //            'images' => $this->when(isset($this->resource['images']),ProductImageResource::collection($this->resource['images']))
         ];
     }
 }

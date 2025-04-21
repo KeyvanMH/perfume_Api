@@ -3,17 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Observers\UserObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable , HasApiTokens , SoftDeletes;
+    use HasApiTokens, HasFactory , Notifiable , SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -45,20 +43,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function comments() {
+    public function comments()
+    {
         return $this->hasMany(PerfumeComment::class);
     }
 
-    public function replies() {
+    public function replies()
+    {
         return $this->hasMany(PerfumeCommentReply::class);
     }
-    public function factors(){
+
+    public function factors()
+    {
         return $this->hasMany(Factor::class);
     }
-    public function city(){
+
+    public function city()
+    {
         return $this->belongsTo(City::class);
     }
-    public function hasValidAddress():bool{
+
+    public function hasValidAddress(): bool
+    {
         return $this->origin_city_id;
     }
 }

@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
@@ -24,14 +23,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'phone_number' => fake()->numberBetween(1000000000,99999999999),
+            'phone_number' => fake()->numberBetween(1000000000, 99999999999),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'email' => fake()->email(),
-            'post_number' => fake()->numberBetween(1000000000,9999999999),
+            'post_number' => fake()->numberBetween(1000000000, 9999999999),
             'role' => $this->faker->randomElement(['super_admin', 'blog_admin', 'product_admin']),
-//            'sms_verify_code' => fake()->numberBetween(10000,99999),
-//            'remember_token' => Str::random(10),
+            //            'sms_verify_code' => fake()->numberBetween(10000,99999),
+            //            'remember_token' => Str::random(10),
         ];
     }
 

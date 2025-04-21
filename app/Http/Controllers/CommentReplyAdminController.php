@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Const\DefaultConst;
 use App\Models\PerfumeCommentReply;
-use Illuminate\Http\Request;
 
 class CommentReplyAdminController extends Controller
 {
@@ -13,9 +12,10 @@ class CommentReplyAdminController extends Controller
      */
     public function destroy(PerfumeCommentReply $perfumeCommentReply)
     {
-        if(!$perfumeCommentReply->delete()){
+        if (! $perfumeCommentReply->delete()) {
             return response()->json(['message' => DefaultConst::FAIL]);
         }
+
         return response()->json(['message' => DefaultConst::SUCCESSFUL]);
     }
 }

@@ -15,7 +15,7 @@ class ShoppingManagementResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-          'congratulation' => 'you made it!!'
+            'congratulation' => 'you made it!!',
         ];
     }
 }

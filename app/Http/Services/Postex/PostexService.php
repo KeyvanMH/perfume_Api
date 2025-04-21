@@ -1,21 +1,27 @@
 <?php
 
-namespace App\Http\Action\Postex;
+namespace App\Http\Services\Postex;
 
 use App\Models\User;
+use App\Traits\HasUserCompletedInfo;
 use Illuminate\Support\Facades\Http;
 
-class PostexService {
+class PostexService
+{
+    use HasUserCompletedInfo;
 
-    private readonly string $OriginCity ;
+    private readonly string $OriginCity;
+
     private User $user;
+
     public function __construct(User $user)
     {
         $this->user = $user;
         $this->OriginCity = env('POST_CITY_ID');
     }
 
-    public function calculateShippingPrice($output) {
+    public function calculateShippingPrice($output)
+    {
         $productValue = $output['price-without-discount'];
         $url = 'https://api.postex.ir/api/v1/shipping-price';
         $apiKey = env('POST_API_KEY');
@@ -23,41 +29,46 @@ class PostexService {
             'courier' => [
                 'courier_code' => 'IR_POST',
                 'service_type' => 'EXPRESS',
-                'payment_type' => 'SENDER'
+                'payment_type' => 'SENDER',
             ],
             'from_city_code' => $this->OriginCity,
-            'to_city_code' => $this->user->city_id??null,
+            'to_city_code' => $this->user->city_id ?? null,
             'parcel_properties' => [
                 'height' => 100,
                 'width' => 100,
                 'length' => 100,
                 'box_type_id' => $this->boxType($output['products']),
                 'total_weight' => 400,
-                'total_value' => $productValue
+                'total_value' => $productValue,
             ],
             'has_collection' => false,
             'has_distribution' => false,
-            'value_added_service' => [0]
+            'value_added_service' => [0],
         ];
 
         $response = Http::withHeaders([
             'x-api-key' => $apiKey,
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ])->post($url, $payload);
-
         if (isset($response->json()['isSuccess']) && $response->json()['isSuccess'] && isset($response->json()['data']['servicePrices'][0]['initPrice'])) {
             return $response->json()['data']['servicePrices'][0]['initPrice'];
         }
+        info('error in getting postex price'.$response->json()['message']);
+        if ($this->hasAddress(auth()->user())) {
+            throw new \Exception('شکست در دریافت هزینه پست');
+        }
+
         return null;
     }
 
-
-    private function boxType($products) {
+    private function boxType($products)
+    {
         $count = 0;
-        foreach($products as $product){
+        foreach ($products as $product) {
             $count += $product['count'];
         }
-        //todo check for suitable box type
+
+        // todo check for suitable box type
         return match ($count) {
             1 => 1,
             2 => 2,
@@ -65,5 +76,4 @@ class PostexService {
             default => 4,
         };
     }
-
 }

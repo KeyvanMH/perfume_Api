@@ -19,7 +19,7 @@ class ProductImageResource extends JsonResource
             'imagePath' => $this->resource['image_path'],
             'alt' => $this->resource['alt'],
             'extension' => $this->resource['extension'],
-            'size' => $this->resource['size']
+            'size' => $this->resource['size'],
         ];
     }
 }

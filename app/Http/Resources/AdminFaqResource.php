@@ -18,7 +18,7 @@ class AdminFaqResource extends JsonResource
             'id' => $this->resource['id'],
             'question' => $this->resource['question'],
             'answer' => $this->resource['answer'],
-            'is_active' => !$this->resource['deleted_at'] ? 'فعال':'غیر فعال',
+            'is_active' => ! $this->resource['deleted_at'] ? 'فعال' : 'غیر فعال',
         ];
     }
 }

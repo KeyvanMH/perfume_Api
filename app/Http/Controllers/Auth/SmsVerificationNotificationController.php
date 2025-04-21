@@ -14,7 +14,7 @@ class SmsVerificationNotificationController extends Controller
      */
     public function store(Request $request): JsonResponse|RedirectResponse
     {
-        //TODO we have to put rate limiter for specific phone number to prevent spam
+        // TODO we have to put rate limiter for specific phone number to prevent spam
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended('/dashboard');
         }

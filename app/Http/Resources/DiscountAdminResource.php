@@ -21,8 +21,8 @@ class DiscountAdminResource extends JsonResource
             'percent' => $this->resource['percent'],
             'endDate' => $this->resource['end_date'],
             'isActive' => $this->resource['status'] == 'active' ? 'فعال' : 'غیر فعال',
-            'isDeleted' => !$this->resource['deleted_at'] ? 'فعال' : 'غیر فعال',
-            'product' => $this->when(!empty($this->resource['product']),new PerfumeProductAdminResource($this->resource['product']))
+            'isDeleted' => ! $this->resource['deleted_at'] ? 'فعال' : 'غیر فعال',
+            'product' => $this->when(! empty($this->resource['product']), new PerfumeProductAdminResource($this->resource['product'])),
         ];
 
     }

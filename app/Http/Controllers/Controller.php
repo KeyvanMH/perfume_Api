@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 /**
  * @OA\Info(
  *      version="1.0.0",
@@ -17,7 +18,4 @@ namespace App\Http\Controllers;
  *     description="API Endpoints of Projects"
  * )
  */
-abstract class Controller
-{
-
-}
+abstract class Controller {}

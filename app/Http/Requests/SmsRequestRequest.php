@@ -23,7 +23,7 @@ class SmsRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => ['required','string','size:11',new PhoneNumberRule],
+            'phone_number' => ['required', 'string', 'size:11', new PhoneNumberRule],
         ];
     }
 }

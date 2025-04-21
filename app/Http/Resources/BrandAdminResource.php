@@ -21,8 +21,8 @@ class BrandAdminResource extends JsonResource
             'description' => $this->resource['description'],
             'title' => $this->resource['title'],
             'slug' => $this->resource['slug'],
-            'status' => !$this->resource['deleted_at']?'فعال':' حذف شده',
-            'images' => $this->when(isset($this->resource['images']),BrandImageResource::collection($this->resource['images'])),
+            'status' => ! $this->resource['deleted_at'] ? 'فعال' : ' حذف شده',
+            'images' => $this->when(isset($this->resource['images']), BrandImageResource::collection($this->resource['images'])),
         ];
     }
 }

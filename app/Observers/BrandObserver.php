@@ -28,8 +28,8 @@ class BrandObserver
      */
     public function deleted(Brand $brand): void
     {
-        foreach ($brand->images as $image){
-            if(Storage::exists($image->image_path)){
+        foreach ($brand->images as $image) {
+            if (Storage::exists($image->image_path)) {
                 Storage::delete($image->image_path);
             }
         }
