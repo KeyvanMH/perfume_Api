@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Action\Filter\PerfumeFilterService;
+use App\Http\Services\Filter\PerfumeFilterService;
 use App\Http\Const\DefaultConst;
 use App\Http\Resources\PerfumeProductResource;
 use App\Http\Resources\PerfumeSearchResource;

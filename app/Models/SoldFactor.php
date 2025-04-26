@@ -19,4 +19,7 @@ class SoldFactor extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function getTotalPriceToPay(){
+        return $this->total_price_to_pay;
+    }
 }

@@ -34,7 +34,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
-    return 'test';    
+    return Illuminate\Support\Facades\Redis::hgetall("cart:product_type=perfume&user_id=1");
 });
 
 require __DIR__.'/auth.php';

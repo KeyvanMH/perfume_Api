@@ -39,7 +39,7 @@ class BankGatewayRequestController extends Controller
 
     public function verify(Request $request, ShetabitService $shetabitService)
     {
-        $shetabitService->verify($request->query('Authority'), $request->query('Status') == 'OK');
+        $shetabitService->verify($request->query('Authority') ?? '', $request->query('Status') == 'OK' ?? false);
 
         return response()->json(['reference id ' => $shetabitService->getReferenceId()]);
 
@@ -47,7 +47,7 @@ class BankGatewayRequestController extends Controller
 
     private function validateUser(User|Authenticatable $user)
     {
-        // todo check that user is online and has cart :)
+        // todo check that user is online and has cart
         if (! $this->hasAddress($user)) {
             throw new ErrorException('امکان خرید برای کاربر غیر فعال است.');
         }

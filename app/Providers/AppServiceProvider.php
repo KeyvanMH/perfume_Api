@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Services\Product\ProductService;
 use App\Http\Services\Shetabit\ShetabitService;
 use App\Http\Services\SoldProduct\SoldProductService;
 use App\Models\Brand;
@@ -27,11 +28,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-        $this->app->bind(SoldProductService::class, function () {
-            return new SoldProductService('this is test from appservice provider');
-        });
         $this->app->bind(ShetabitService::class, function () {
-            return new ShetabitService(new SoldProductService, env('APP_URL').'/api/purchase-verify');
+            return new ShetabitService(new SoldProductService(new ProductService), env('APP_URL').'/api/purchase-verify');
         });
     }
 

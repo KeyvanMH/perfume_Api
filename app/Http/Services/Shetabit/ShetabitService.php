@@ -3,6 +3,7 @@
 namespace App\Http\Services\Shetabit;
 
 use App\Exceptions\ErrorException;
+use App\Http\Services\Product\ProductService;
 use App\Http\Services\SoldProduct\SoldProductService;
 use Shetabit\Multipay\Exceptions\InvalidPaymentException;
 use Shetabit\Multipay\Invoice;
@@ -49,14 +50,20 @@ class ShetabitService
             throw new ErrorException('payment failed');
         }
         try {
-            $receipt = Payment::amount($this->soldProductService->getFactor($transactionId)->total_price_to_pay)->transactionId($transactionId)->verify();
+            $factor = $this->soldProductService->getFactor($transactionId);
+            // verify method of the payment facade will handle wrong verification by itself
+            $receipt = Payment::amount(
+                $factor->getTotalPriceToPay()
+            )->transactionId($transactionId)->verify();
             $this->soldProductService->storeReferenceId($transactionId, $receipt->getReferenceId());
             $this->soldProductService->verifyPayment($transactionId);
+            $this->soldProductService->manageSoldFactor($factor);
+            dd('test');
             // todo minus from productDB, add to sold column of product db , minus from redis DB, dont verify if its already verified
             $this->reference_id = $receipt->getReferenceId();
         } catch (InvalidPaymentException $exception) {
             info($exception->getMessage());
-            throw new \Exception('error'.$exception->getMessage());
+            throw new \Exception('error : '.$exception->getMessage());
         }
     }
 
